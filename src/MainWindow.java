@@ -113,13 +113,21 @@ public class MainWindow implements ToolboxListenerMainWindow{
                             ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")),
                             ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")),
                             ImageIO.read(new File(resultdir + "sprites/human/footman.png")),
-                            ImageIO.read(new File(resultdir + "sprites/orc/grunt.png"))
+                            ImageIO.read(new File(resultdir + "sprites/orc/grunt.png")),
+                            ImageIO.read(new File(resultdir + "sprites/human/peasant.png")),
+                            ImageIO.read(new File(resultdir + "sprites/orc/peon.png")),
+                            ImageIO.read(new File(resultdir + "sprites/human/archer.png")),
+                            ImageIO.read(new File(resultdir + "sprites/orc/axethrower.png"))
                     };
                     String[] recogniseWith = new String[]{  //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
                             "Human",
                             "Orc",
                             "Footman",
-                            "Grunt"
+                            "Grunt",
+                            "Peasant",
+                            "Peon",
+                            "Archer",
+                            "Axethrower"
                     };
 
                     Image[] unitTiles = SpritesheetParser.CutSpriteSheet(spritesheets,recogniseWith,XMLSettingsReader.UnitTiles); //=  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLSettingsReader.UnitTiles);

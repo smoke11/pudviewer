@@ -111,29 +111,29 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             doc.createComment("UNITS");
             doc.createComment("================\r\n");
             names = new String[4][];
-            names[0]=new String[]{"Footman","Peasant","Ballista","Knight","Archer","Mage","Paladin","Dwarves",
+            names[0]=new String[]{"Footman","Peasant","Archer","Ballista","Knight","Mage","Paladin","Dwarves",  //TODO: get it back to regular order (i switched archer with ballista, because i get archer offsets already and i`m lazy)
             };
-            names[1] = new String[]{"Grunt","Peon","Catapult","Ogre","Axethrower","Death Knight","Ogre-Mage","Goblin Sapper"
+            names[1] = new String[]{"Grunt","Peon","Axethrower","Catapult","Ogre","Death Knight","Ogre-Mage","Goblin Sapper"
             };
             ids = new String[4][];
-            ids[0]=new String[]{"00","02","04","06","08","0a","0c","0e"};
-            ids[1]= new String[]{"01","03","05","07","09","0b","0d","0f"};
+            ids[0]=new String[]{"00","02","08","04","06","0a","0c","0e"};
+            ids[1]= new String[]{"01","03","09","05","07","0b","0d","0f"};
             allOffsetX = new int[4][];
             allOffsetY = new int[4][];
             //human
-            allOffsetX[0]=new int[]{17};
-            allOffsetY[0]=new int[]{5};
+            allOffsetX[0]=new int[]{17,12,6};   //TODO: Make better offsets and size (possible separate to sizex and sizey) for units
+            allOffsetY[0]=new int[]{5,1,14};
             //orc
-            allOffsetX[1]=new int[]{17};
-            allOffsetY[1]=new int[]{5};
+            allOffsetX[1]=new int[]{17,12,6};
+            allOffsetY[1]=new int[]{5,1,14};
 
             sizes = new int[4][];
-            sizes[0]=new int[]{45};
-            sizes[1]=new int[]{45};
+            sizes[0]=new int[]{45,33,47};
+            sizes[1]=new int[]{45,33,47};
 
             for (int i1=0;i1<2;i1++)//for each style of tiles
             {
-                for(int i2=0;i2<1;i2++)//for each unit
+                for(int i2=0;i2<3;i2++)//for each unit
                 {
 
                     tile = doc.createElement("Unit");
