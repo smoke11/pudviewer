@@ -9,4 +9,8 @@ Do not download and use them, if you do not have your own copy of Warcraft 2 gam
 Copy spritesheets to sprites folder in same dir as jar.
 Orcs spritesheets to orcs subfolder, Human spritesheets to human subfolder. (i.e. folderwithjar/sprites/human)
 
+Maps can be found in several places, i.e. http://www.angelfire.com/mi/TheRingOfShadows/war2puds.html
+
+Run MainClass in pudviewer to run program.
+
 All rights belong to their respective owners.

@@ -22,7 +22,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-public class XML_Buildings_SettingsCreatorIter {  //'thankfully' each of spritesheet is in diffrent size and order, so yeah, writing it all down :|
+public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet is in diffrent size and order, so yeah, writing it all down :|
     public static int main(String argv[]) {
 
         try {
@@ -33,9 +33,6 @@ public class XML_Buildings_SettingsCreatorIter {  //'thankfully' each of sprites
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("UnitTiles");
             doc.appendChild(rootElement);
-            doc.createComment("================\r\n");
-            doc.createComment("BUILDINGS");
-            doc.createComment("================\r\n");
             Element tile;
             //id
             Attr attr;
@@ -47,7 +44,11 @@ public class XML_Buildings_SettingsCreatorIter {  //'thankfully' each of sprites
             Element offsetx;
             //offsety
             Element offsety;
+            doc.createComment("================\r\n");
+            doc.createComment("BUILDINGS");
+            doc.createComment("================\r\n");
 
+            //<editor-fold desc="Description">
             //0-human summer
             String[] prefix = new String[]{"Human", "Orc"};
             String[][] names = new String[4][];
@@ -81,7 +82,7 @@ public class XML_Buildings_SettingsCreatorIter {  //'thankfully' each of sprites
                 for(int i2=0;i2<names[i1].length;i2++)//for each unit
                 {
 
-                    tile = doc.createElement("Building");
+                    tile = doc.createElement("Unit");
                     rootElement.appendChild(tile);
                     //id
                     attr = doc.createAttribute("PudID");
@@ -105,7 +106,60 @@ public class XML_Buildings_SettingsCreatorIter {  //'thankfully' each of sprites
                     tile.appendChild(offsety);
                 }
             }
+            //</editor-fold>
+            doc.createComment("================\r\n");
+            doc.createComment("UNITS");
+            doc.createComment("================\r\n");
+            names = new String[4][];
+            names[0]=new String[]{"Footman","Peasant","Ballista","Knight","Archer","Mage","Paladin","Dwarves",
+            };
+            names[1] = new String[]{"Grunt","Peon","Catapult","Ogre","Axethrower","Death Knight","Ogre-Mage","Goblin Sapper"
+            };
+            ids = new String[4][];
+            ids[0]=new String[]{"00","02","04","06","08","0a","0c","0e"};
+            ids[1]= new String[]{"01","03","05","07","09","0b","0d","0f"};
+            allOffsetX = new int[4][];
+            allOffsetY = new int[4][];
+            //human
+            allOffsetX[0]=new int[]{17};
+            allOffsetY[0]=new int[]{5};
+            //orc
+            allOffsetX[1]=new int[]{17};
+            allOffsetY[1]=new int[]{5};
 
+            sizes = new int[4][];
+            sizes[0]=new int[]{45};
+            sizes[1]=new int[]{45};
+
+            for (int i1=0;i1<2;i1++)//for each style of tiles
+            {
+                for(int i2=0;i2<1;i2++)//for each unit
+                {
+
+                    tile = doc.createElement("Unit");
+                    rootElement.appendChild(tile);
+                    //id
+                    attr = doc.createAttribute("PudID");
+                    attr.setValue(ids[i1][i2]);  //chars
+                    tile.setAttributeNode(attr);
+                    //name
+                    name = doc.createElement("Name");
+                    name.appendChild(doc.createTextNode(names[i1][i2]));
+                    tile.appendChild(name);
+                    //size
+                    size = doc.createElement("Size");
+                    size.appendChild(doc.createTextNode(String.valueOf(sizes[i1][i2])));
+                    tile.appendChild(size);
+                    //offsetx
+                    offsetx = doc.createElement("OffsetX");
+                    offsetx.appendChild(doc.createTextNode(String.valueOf(allOffsetX[i1][i2])));
+                    tile.appendChild(offsetx);
+                    //offsety
+                    offsety = doc.createElement("OffsetY");
+                    offsety.appendChild(doc.createTextNode(String.valueOf(allOffsetY[i1][i2])));
+                    tile.appendChild(offsety);
+                }
+            }
 
             // write the content into xml file
             TransformerFactory transformerFactory = TransformerFactory.newInstance();

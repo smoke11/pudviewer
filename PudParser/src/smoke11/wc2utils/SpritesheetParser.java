@@ -39,6 +39,36 @@ public class SpritesheetParser {
         }
         return sprites;
     }
+    public static Image[] CutSpriteSheet(BufferedImage[] spritesheets, String[] ifThisContainsUseImage, Tile[][] tiles)
+    {
+        Image crop;
+        Image[] sprites = new Image[tiles.length*tiles[0].length];
+        int lastID=-1;
+        for (int i1=0;i1<tiles.length;i1++)
+        {
+            for (int i2=0;i2<tiles[0].length;i2++)
+            {
+                if(tiles[i1][i2]!=null)
+                {
+                    if(lastID!=tiles[i1][i2].ID)
+                    {
+                        lastID=tiles[i1][i2].ID;
+                        for (int n=0;n<ifThisContainsUseImage.length;n++)
+                        {
+                            if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n]))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
+                                sprites[lastID]=spritesheets[n].getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size);
+
+                        }
+
+                    }
+                }
+
+
+            }
+
+        }
+        return sprites;
+    }
     public static Image[] CutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
     {
         Image crop;

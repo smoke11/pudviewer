@@ -91,7 +91,7 @@ public class XMLSettingsReader {
 
             doc.getDocumentElement().normalize();
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
-            nList = doc.getElementsByTagName("Building");
+            nList = doc.getElementsByTagName("Unit");
 
 
             System.out.println("----------------------------");

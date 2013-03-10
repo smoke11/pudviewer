@@ -9,6 +9,7 @@
 import smoke11.wc2utils.*;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -99,14 +100,29 @@ public class MainWindow implements ToolboxListenerMainWindow{
                 {
                     int result = XML_Tiles_SettingsCreatorIter.main(null);
                 }
-                if(true)//!unittiles.exists())
+                if(true)//!unittiles.exists())  TODO: For now making with each run new xml, for test. after this, removeit
                 {
-                    int result = XML_Buildings_SettingsCreatorIter.main(null);
+                    int result = XML_Units_SettingsCreatorIter.main(null);
                 }
+
                 if(XMLSettingsReader.main(new String[]{resultdir+"terrain_tiles.xml",resultdir+"unit_tiles.xml"})!=0)
                     System.out.println("There is something wrong with XMLSettingsReader");
+
                 try {
-                    Image[] unitTiles =  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLSettingsReader.UnitTiles);
+                    BufferedImage[] spritesheets = new BufferedImage[]{
+                            ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")),
+                            ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")),
+                            ImageIO.read(new File(resultdir + "sprites/human/footman.png")),
+                            ImageIO.read(new File(resultdir + "sprites/orc/grunt.png"))
+                    };
+                    String[] recogniseWith = new String[]{  //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
+                            "Human",
+                            "Orc",
+                            "Footman",
+                            "Grunt"
+                    };
+
+                    Image[] unitTiles = SpritesheetParser.CutSpriteSheet(spritesheets,recogniseWith,XMLSettingsReader.UnitTiles); //=  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLSettingsReader.UnitTiles);
                     mapViewPanel.setImages(unitTiles,SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir+"sprites/summertiles.png")), XMLSettingsReader.SortedTerrainTiles));
                 }
                 catch (IOException e) {
