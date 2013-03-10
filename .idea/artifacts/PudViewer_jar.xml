@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="PudViewer:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/PudViewer_jar</output-path>
+    <root id="archive" name="PudViewer.jar">
+      <element id="module-output" name="PudViewer" />
+      <element id="module-output" name="PudParser" />
+    </root>
+  </artifact>
+</component>
