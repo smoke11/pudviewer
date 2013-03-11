@@ -1,6 +1,6 @@
 
 
-import smoke11.wc2utils.PudParser;
+import smoke11.pudparser.PudParser;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -135,7 +135,7 @@ class LabelAccessory extends JLabel implements PropertyChangeListener {
                 {
                     PudParser p = new PudParser();
                     p.getInfoFromFile(file);
-                    text="Title: "+p.pudTitle +"<br />pudDesc: "+p.pudDesc +"<br />Dimension: "+p.dimX +"x"+p.dimY +"<br />Terrain Type: "+p.terrainType +"<br />Use custom data:<br />Units: "+p.customUnitData +"<br />Upgrades: "+p.customUpgradeData +"<br />Num. of Units on map: "+p.NumberofUnitsOnMap;           //hack with html to make new line
+                    text="Title: "+p.pudTitle +"<br />pudDesc: "+p.pudDesc +"<br />Dimension: "+p.dimX +"x"+p.dimY +"<br />Terrain Type: "+p.terrainType +"<br />Use custom data:<br />Units: "+p.customUnitData +"<br />Upgrades: "+p.customUpgradeData +"<br />Num. of Units on map: "+p.numberofUnitsOnMap;           //hack with html to make new line
                 }
             }
         }

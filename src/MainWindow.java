@@ -6,7 +6,11 @@
  * To change this template use File | Settings | File Templates.
  */
 
-import smoke11.wc2utils.*;
+import smoke11.pudparser.PudParser;
+import smoke11.pudparser.SpritesheetParser;
+import smoke11.pudparser.xml.XMLPudSettingsReader;
+import smoke11.pudparser.xml.XML_Tiles_SettingsCreatorIter;
+import smoke11.pudparser.xml.XML_Units_SettingsCreatorIter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

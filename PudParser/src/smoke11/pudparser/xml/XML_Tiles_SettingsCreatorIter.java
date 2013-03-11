@@ -1,4 +1,4 @@
-package smoke11.wc2utils;
+package smoke11.pudparser.xml;
 /**
  * Created with IntelliJ IDEA.
  * User: nao
