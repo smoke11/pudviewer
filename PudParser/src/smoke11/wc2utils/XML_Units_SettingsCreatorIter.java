@@ -12,7 +12,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import java.io.File;
-import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -165,25 +164,14 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            String fulldir = XMLSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            String dironly = fulldir.substring(0, fulldir.lastIndexOf("/") + 1);
-            File f;
-            if(fulldir.contains(".jar".toLowerCase()))
-                f=new File(dironly+"unit_tiles.xml");
-            else
-                f=new File(fulldir+"unit_tiles.xml");
+            File f=new File(argv[0]);
             if(f.exists())
             {
                 f.delete();
             }
             StreamResult result;
 
-            System.out.println(fulldir);
-            System.out.println(dironly);
-            if(fulldir.contains(".jar".toLowerCase()))  //to fix bug with name of jar when running from jar
-                result = new StreamResult(new File(dironly+"unit_tiles.xml"));
-            else
-                result = new StreamResult(new File(fulldir+"unit_tiles.xml"));
+            result = new StreamResult(new File(argv[0]));
 
                 transformer.transform(source, result);
 

@@ -18,7 +18,7 @@ public class MainWindow implements ToolboxListenerMainWindow{
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
         private void createAndShowGUI() {
-            if(XMLSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
+            if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
             //Create and set up the debug window.
             JTextArea ta = new JTextArea();
@@ -68,90 +68,92 @@ public class MainWindow implements ToolboxListenerMainWindow{
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     createAndShowGUI();
-                    initialize();
+                    XMLSettingsCreator.main(new String[]{"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"}); //here put dir to your data files. For most of the time its folder with your jar in it
+                    loadMap();
                 }
             });
 
         }
-    private void initialize()   //TODO: MAKE XML WITH SETTINGS
+    private void readSettings()
     {
         FileOpenPanel f = new FileOpenPanel();
-        f.openFile();
-        if(f.OpenedFile !=null)
+        f.openXMLFile();
+        if(f.OpenedXMLFile !=null)
         {
-            File terraintiles, unittiles;
+            File settingsxml, terraintiles, unittiles;
+            settingsxml = f.OpenedXMLFile;
+            XMLSettingsReader.main(new String[]{f.OpenedXMLFile.getPath()});
+            unittiles = new File(XMLSettingsReader.Dirs[1]);
+            terraintiles = new File(XMLSettingsReader.Dirs[2]);
+            if(true)//!unittiles.exists())  TODO: For now making with each run new xml, for test. after this, removeit
+            {
+                int result = XML_Units_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[1]});
+            }
+            if(!terraintiles.exists())
+            {
+                int result = XML_Tiles_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[2]});
+            }
+
+
+            if(XMLPudSettingsReader.main(new String[]{XMLSettingsReader.Dirs[2], XMLSettingsReader.Dirs[1]})!=0)
+                System.out.println("There is something wrong with XMLPudSettingsReader");
+
+            try {
+                BufferedImage[] spritesheets = new BufferedImage[]{
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/humanbuildingssummer.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/orcbuildingssummer.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/footman.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/grunt.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/peasant.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/peon.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/archer.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/axethrower.png"))
+                };
+                String[] recogniseWith = new String[]{  //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
+                        "Human",
+                        "Orc",
+                        "Footman",
+                        "Grunt",
+                        "Peasant",
+                        "Peon",
+                        "Archer",
+                        "Axethrower"
+                };
+
+                Image[] unitTiles = SpritesheetParser.CutSpriteSheet(spritesheets,recogniseWith, XMLPudSettingsReader.UnitTiles); //=  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.UnitTiles);
+                mapViewPanel.setImages(unitTiles,SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3]+"summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
+            }
+            catch (IOException e) {
+                System.out.println("Can`t read summertiles.png");
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
+    }
+    private void loadMap()   //TODO: MAKE XML WITH SETTINGS
+    {
+        FileOpenPanel f = new FileOpenPanel();
+
+        if(firstTimeOpen)
+            readSettings();
+
+        f.openMapFile(XMLSettingsReader.Dirs[0]);
+        if(f.OpenedMapFile !=null)
+        {
+
             PudParser p;
             p = new PudParser();
-            p.getMapDataFromFile(f.OpenedFile);
+            p.getMapDataFromFile(f.OpenedMapFile);
 
 
-            if(firstTimeOpen)
-            {
-                String fulldir = XMLSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                String dironly = fulldir.substring(0, fulldir.lastIndexOf("/") + 1);
-                String resultdir;
-                if(fulldir.contains(".jar".toLowerCase()))  //to fix bug with name of jar when running from jar
-                    resultdir = (dironly);
-                else
-                    resultdir = (fulldir);
-                terraintiles = new File(resultdir+"terrain_tiles.xml");
-                unittiles = new File(resultdir+"unit_tiles.xml");
-                if(!terraintiles.exists())
-                {
-                    int result = XML_Tiles_SettingsCreatorIter.main(null);
-                }
-                if(true)//!unittiles.exists())  TODO: For now making with each run new xml, for test. after this, removeit
-                {
-                    int result = XML_Units_SettingsCreatorIter.main(null);
-                }
-
-                if(XMLSettingsReader.main(new String[]{resultdir+"terrain_tiles.xml",resultdir+"unit_tiles.xml"})!=0)
-                    System.out.println("There is something wrong with XMLSettingsReader");
-
-                try {
-                    BufferedImage[] spritesheets = new BufferedImage[]{
-                            ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")),
-                            ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")),
-                            ImageIO.read(new File(resultdir + "sprites/human/footman.png")),
-                            ImageIO.read(new File(resultdir + "sprites/orc/grunt.png")),
-                            ImageIO.read(new File(resultdir + "sprites/human/peasant.png")),
-                            ImageIO.read(new File(resultdir + "sprites/orc/peon.png")),
-                            ImageIO.read(new File(resultdir + "sprites/human/archer.png")),
-                            ImageIO.read(new File(resultdir + "sprites/orc/axethrower.png"))
-                    };
-                    String[] recogniseWith = new String[]{  //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
-                            "Human",
-                            "Orc",
-                            "Footman",
-                            "Grunt",
-                            "Peasant",
-                            "Peon",
-                            "Archer",
-                            "Axethrower"
-                    };
-
-                    Image[] unitTiles = SpritesheetParser.CutSpriteSheet(spritesheets,recogniseWith,XMLSettingsReader.UnitTiles); //=  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLSettingsReader.UnitTiles);
-                    mapViewPanel.setImages(unitTiles,SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir+"sprites/summertiles.png")), XMLSettingsReader.SortedTerrainTiles));
-                }
-                catch (IOException e) {
-                    System.out.println("Can`t read summertiles.png");
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-                }
-            }
-
-                mapViewPanel.prepareTiles(p.TerrainTiles,p.UnitTiles,XMLSettingsReader.SortedTerrainTiles, XMLSettingsReader.UnitTiles);
-            }
+            mapViewPanel.prepareTiles(p.TerrainTiles,p.UnitTiles, XMLPudSettingsReader.SortedTerrainTiles, XMLPudSettingsReader.UnitTiles);
             firstTimeOpen=false;
             mapViewPanel.repaint();
 
-
-
-
+        }
     }
-
     @Override
     public void loadMap(ToolboxEvents e) {
-        initialize();
+        loadMap();
     }
 }
 

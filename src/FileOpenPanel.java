@@ -11,10 +11,11 @@ import java.io.File;
 
 public class FileOpenPanel extends JPanel
 {
-    public File OpenedFile;
-    public void openFile() {
+    public File OpenedMapFile;
+    public File OpenedXMLFile;
+    public void openXMLFile() {
         JFileChooser fileChooser = new JFileChooser();
-        FileFilter filter1 = new ExtensionFileFilter(".pud", new String[] { "pud" });
+        FileFilter filter1 = new ExtensionFileFilter(".xml", new String[] { "xml" });
         fileChooser.setFileFilter(filter1);
         String fulldir = FileOpenPanel.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String dironly = fulldir.substring(0, fulldir.lastIndexOf("/") + 1);
@@ -29,13 +30,24 @@ public class FileOpenPanel extends JPanel
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            OpenedFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + OpenedFile.getAbsolutePath());
+            OpenedXMLFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + OpenedXMLFile.getAbsolutePath());
         }
     }
-    public static void main(String[] args) {
-        FileOpenPanel v = new FileOpenPanel();
-        v.openFile();
+    public void openMapFile(String dir) {
+        JFileChooser fileChooser = new JFileChooser();
+        FileFilter filter1 = new ExtensionFileFilter(".pud", new String[] { "pud" });
+        fileChooser.setFileFilter(filter1);
+
+
+        fileChooser.setCurrentDirectory(new File(dir));
+        fileChooser.setAccessory(new LabelAccessory(fileChooser));
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            OpenedMapFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + OpenedMapFile.getAbsolutePath());
+        }
     }
 
 }

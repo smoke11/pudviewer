@@ -16,7 +16,7 @@ import java.io.File;
  * Time: 21:56
  * To change this template use File | Settings | File Templates.
  */
-public class XMLSettingsReader {
+public class XMLPudSettingsReader {
     public static Tile[][][] SortedTerrainTiles;
     public static Tile[][] UnitTiles;
     public static int main(String[] args){ //public static void readXMLSettings() {

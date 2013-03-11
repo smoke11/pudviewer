@@ -971,25 +971,15 @@ public class XML_Tiles_SettingsCreatorIter {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            String fulldir = XMLSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-            String dironly = fulldir.substring(0, fulldir.lastIndexOf("/") + 1);
-            File f;
-            if(fulldir.contains(".jar".toLowerCase()))
-                f=new File(dironly+"terrain_tiles.xml");
-            else
-                f=new File(fulldir+"terrain_tiles.xml");
+
+            File f=new File(argv[0]);
             if(f.exists())
             {
                 f.delete();
             }
             StreamResult result;
 
-            System.out.println(fulldir);
-            System.out.println(dironly);
-            if(fulldir.contains(".jar".toLowerCase()))  //to fix bug with name of jar when running from jar
-                result = new StreamResult(new File(dironly+"terrain_tiles.xml")); //TODO: move naming to mainwindow class, and here get it from args, as it is in readerxml
-            else
-                result = new StreamResult(new File(fulldir+"terrain_tiles.xml"));
+            result = new StreamResult(new File(argv[0]));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
