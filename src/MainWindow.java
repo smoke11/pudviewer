@@ -11,12 +11,16 @@ import smoke11.wc2utils.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Field;
+import java.util.Collections;
+import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 public class MainWindow implements ToolboxListenerMainWindow{
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
+        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
@@ -68,7 +72,12 @@ public class MainWindow implements ToolboxListenerMainWindow{
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     createAndShowGUI();
-                    XMLSettingsCreator.main(new String[]{"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"}); //here put dir to your data files. For most of the time its folder with your jar in it
+                    File XMLfile = new File(mainDir+"settings.xml");
+                    if(!XMLfile.exists())
+                    {
+                        XMLSettingsCreator.main(new String[]{mainDir+"settings.xml"});
+                    }
+
                     loadMap();
                 }
             });
@@ -77,12 +86,17 @@ public class MainWindow implements ToolboxListenerMainWindow{
     private void readSettings()
     {
         FileOpenPanel f = new FileOpenPanel();
-        f.openXMLFile();
-        if(f.OpenedXMLFile !=null)
+        File XMLfile = new File(mainDir+"settings.xml");
+        if(!XMLfile.exists())
+        {
+            f.openXMLFile();
+            XMLfile = f.OpenedXMLFile;
+        }
+        if(XMLfile !=null)
         {
             File settingsxml, terraintiles, unittiles;
-            settingsxml = f.OpenedXMLFile;
-            XMLSettingsReader.main(new String[]{f.OpenedXMLFile.getPath()});
+            settingsxml = XMLfile;
+            XMLSettingsReader.main(new String[]{XMLfile.getPath()});
             unittiles = new File(XMLSettingsReader.Dirs[1]);
             terraintiles = new File(XMLSettingsReader.Dirs[2]);
             if(true)//!unittiles.exists())  TODO: For now making with each run new xml, for test. after this, removeit
@@ -129,7 +143,7 @@ public class MainWindow implements ToolboxListenerMainWindow{
             }
         }
     }
-    private void loadMap()   //TODO: MAKE XML WITH SETTINGS
+    private void loadMap()
     {
         FileOpenPanel f = new FileOpenPanel();
 
@@ -154,6 +168,43 @@ public class MainWindow implements ToolboxListenerMainWindow{
     @Override
     public void loadMap(ToolboxEvents e) {
         loadMap();
+    }
+
+    protected static void setEnv(Map<String, String> newenv) //http://stackoverflow.com/questions/318239/how-do-i-set-environment-variables-from-java
+    {                                                        //for keeping dir to settings.xml
+        try
+        {
+            Class<?> processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment");
+            Field theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment");
+            theEnvironmentField.setAccessible(true);
+            Map<String, String> env = (Map<String, String>) theEnvironmentField.get(null);
+            env.putAll(newenv);
+            Field theCaseInsensitiveEnvironmentField = processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment");
+            theCaseInsensitiveEnvironmentField.setAccessible(true);
+            Map<String, String> cienv = (Map<String, String>)     theCaseInsensitiveEnvironmentField.get(null);
+            cienv.putAll(newenv);
+        }
+        catch (NoSuchFieldException e)
+        {
+            try {
+                Class[] classes = Collections.class.getDeclaredClasses();
+                Map<String, String> env = System.getenv();
+                for(Class cl : classes) {
+                    if("java.util.Collections$UnmodifiableMap".equals(cl.getName())) {
+                        Field field = cl.getDeclaredField("m");
+                        field.setAccessible(true);
+                        Object obj = field.get(env);
+                        Map<String, String> map = (Map<String, String>) obj;
+                        map.clear();
+                        map.putAll(newenv);
+                    }
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
     }
 }
 

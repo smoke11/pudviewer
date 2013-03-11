@@ -61,14 +61,14 @@ public class XMLSettingsCreator {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
 
-                File f=new File(argv[0]+"settings.xml");
+                File f=new File(argv[0]);
             if(f.exists())
             {
                 f.delete();
             }
             StreamResult result;
 
-                result = new StreamResult(new File(argv[0]+"settings.xml"));
+                result = new StreamResult(new File(argv[0]));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);
