@@ -12,10 +12,10 @@ import java.awt.image.BufferedImage;
  * To change this template use File | Settings | File Templates.
  */
 public class SpritesheetParser {
-    public static Image[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][][] tiles)
+    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][][] tiles)
     {
-        Image crop;
-        Image[] sprites = new Image[tiles.length*tiles[0].length*tiles[0][0].length];
+        BufferedImage crop;
+        BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length*tiles[0][0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
         {
@@ -28,7 +28,7 @@ public class SpritesheetParser {
                         if(lastID!=tiles[i1][i2][i3].ID)
                         {
                             lastID=tiles[i1][i2][i3].ID;
-                            sprites[lastID]=spritesheet.getSubimage(tiles[i1][i2][i3].OffsetX,tiles[i1][i2][i3].OffsetY, tiles[i1][i2][i3].Size,tiles[i1][i2][i3].Size);
+                            sprites[lastID]=ToCompatibleImage(spritesheet.getSubimage(tiles[i1][i2][i3].OffsetX,tiles[i1][i2][i3].OffsetY, tiles[i1][i2][i3].Size,tiles[i1][i2][i3].Size));
 
                         }
                     }
@@ -39,10 +39,10 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static Image[] CutSpriteSheet(BufferedImage[] spritesheets, String[] ifThisContainsUseImage, Tile[][] tiles)
+    public static BufferedImage[] CutSpriteSheet(BufferedImage[] spritesheets, String[] ifThisContainsUseImage, Tile[][] tiles)
     {
-        Image crop;
-        Image[] sprites = new Image[tiles.length*tiles[0].length];
+        BufferedImage crop;
+        BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
         {
@@ -56,7 +56,7 @@ public class SpritesheetParser {
                         for (int n=0;n<ifThisContainsUseImage.length;n++)
                         {
                             if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n]))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
-                                sprites[lastID]=spritesheets[n].getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size);
+                                sprites[lastID]=ToCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
 
                         }
 
@@ -69,10 +69,10 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static Image[] CutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
+    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
     {
-        Image crop;
-        Image[] sprites = new Image[tiles.length*tiles[0].length];
+        BufferedImage crop;
+        BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
         {
@@ -84,9 +84,9 @@ public class SpritesheetParser {
                     {
                         lastID=tiles[i1][i2].ID;
                         if(tiles[i1][i2].Name.contains(ifThisContainsUseFirstImage))
-                            sprites[lastID]=spritesheet1.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size);
+                            sprites[lastID]=ToCompatibleImage(spritesheet1.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
                         else
-                            sprites[lastID]=spritesheet2.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size);
+                            sprites[lastID]=ToCompatibleImage(spritesheet2.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
 /*                            File outputfile = new File(SpritesheetParser.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"saved.png");
                             try {
                                 ImageIO.write(spritesheet.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size), "png", outputfile);
@@ -103,10 +103,10 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static Image[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][] tiles)
+    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][] tiles)
     {
-        Image crop;
-        Image[] sprites = new Image[tiles.length*tiles[0].length];
+        BufferedImage crop;
+        BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
         {
@@ -117,7 +117,7 @@ public class SpritesheetParser {
                         if(lastID!=tiles[i1][i2].ID)
                         {
                             lastID=tiles[i1][i2].ID;
-                            sprites[lastID]=spritesheet.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size);
+                            sprites[lastID]=ToCompatibleImage(spritesheet.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
 /*                            File outputfile = new File(SpritesheetParser.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"saved.png");
                             try {
                                 ImageIO.write(spritesheet.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size), "png", outputfile);
@@ -134,16 +134,44 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static Image[] CutSpriteSheet(BufferedImage spritesheet,  Tile[] tiles)
+    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[] tiles)
     {
-        Image crop;
-        Image[] sprites = new Image[tiles.length];
+        BufferedImage crop;
+        BufferedImage[] sprites = new BufferedImage[tiles.length];
         int i = 0;
          for (Tile tile : tiles)
          {
-             sprites[i]=spritesheet.getSubimage(tile.OffsetX,tile.OffsetY, tile.Size,tile.Size);
+             sprites[i]=ToCompatibleImage(spritesheet.getSubimage(tile.OffsetX,tile.OffsetY, tile.Size,tile.Size));
              i++;
          }
          return sprites;
+    }
+    private static BufferedImage ToCompatibleImage(BufferedImage image) //http://stackoverflow.com/questions/196890/java2d-performance-issues
+    {
+        // obtain the current system graphical settings
+        GraphicsConfiguration gfx_config = GraphicsEnvironment.
+                getLocalGraphicsEnvironment().getDefaultScreenDevice().
+                getDefaultConfiguration();
+
+	/*
+	 * if image is already compatible and optimized for current system
+	 * settings, simply return it
+	 */
+        if (image.getColorModel().equals(gfx_config.getColorModel()))
+            return image;
+
+        // image is not optimized, so create a new image that is
+        BufferedImage new_image = gfx_config.createCompatibleImage(
+                image.getWidth(), image.getHeight(), image.getTransparency());
+
+        // get the graphics context of the new image to draw the old image on
+        Graphics2D g2d = (Graphics2D) new_image.getGraphics();
+
+        // actually draw the image and dispose of context no longer needed
+        g2d.drawImage(image, 0, 0, null);
+        g2d.dispose();
+
+        // return the new optimized image
+        return new_image;
     }
 }

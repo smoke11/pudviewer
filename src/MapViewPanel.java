@@ -3,6 +3,7 @@ import smoke11.wc2utils.Tile;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,19 +12,24 @@ import java.awt.event.*;
  * Time: 19:09
  * To change this template use File | Settings | File Templates.
  */
-public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {
-    private Image[] terrainSprites;
-    private Image[] unitSprites;
+public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {  //http://stackoverflow.com/questions/148478/java-2d-drawing-optimal-performance
+    private BufferedImage[] terrainSprites;
+    private BufferedImage[] unitSprites;
     private Tile[][] mapTiles;
     private Tile[][] unitTiles;
     private int cameraOffsetX=0,cameraOffsetY=0;
     private int mouseLastX=0,mouseLastY=0;
-    public boolean drawText = false;
-    public boolean realTimeMoving = true;
+    private boolean drawText = false;
+    private boolean realTimeMoving = true;
+    private boolean movingPanelInsteadCamera = true;  //if true panel will be moved insted drawing again (with diff camera offset) which should be faster but its buggy
     private boolean mouseClicked=false;
-    public MapViewPanel(Dimension d)
+    private JPanel panel;   //for moving panel
+    public MapViewPanel(Dimension d, boolean fastermovingcamera)
     {
         this.setPreferredSize(d);
+        panel=this;
+        movingPanelInsteadCamera=fastermovingcamera;
+
         this.setBackground(Color.orange);
         super.addMouseListener(new MouseListener() {
             @Override
@@ -65,12 +71,26 @@ public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {
             public void mouseDragged(MouseEvent e) {
                 if(realTimeMoving)
                 {
-                    cameraOffsetX+=e.getX()-mouseLastX;
-                    cameraOffsetY+=e.getY()-mouseLastY;
-                    System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
+                    int mouseX =e.getX();
+                    int mouseY=e.getY();
+                    if(movingPanelInsteadCamera)
+                    {
+                        int x = (int)panel.getLocation().getX();
+                        int y = (int)panel.getLocation().getY();
+
+                        panel.setLocation(x+mouseX-mouseLastX,y+mouseY-mouseLastY);
+                        System.out.println("Panel position: "+(int)panel.getLocation().getX()+", "+(int)panel.getLocation().getY());
+                    }
+                    else
+                    {
+                        cameraOffsetX+=mouseX-mouseLastX;
+                        cameraOffsetY+=mouseY-mouseLastY;
+                        System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
+                    }
+                    mouseLastX=mouseX;
+                    mouseLastY=mouseY;
                     makeRepaint();
-                    mouseLastX=e.getX();
-                    mouseLastY=e.getY();
+
                 }
             }
 
@@ -85,7 +105,7 @@ public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {
     {
         super.repaint();
     }
-    public void setImages(Image[] unitsSprites, Image[] tileSprites)
+    public void setImages(BufferedImage[] unitsSprites, BufferedImage[] tileSprites)
     {
         terrainSprites =tileSprites;
         unitSprites=unitsSprites;
@@ -147,32 +167,35 @@ public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {
         super.paintComponent(g);    // paints background
         if(mapTiles!=null)
         {
+
+            Graphics2D g2d = (Graphics2D) g;
+
             int x=0,y=0;
             Font f = new Font("serif", Font.PLAIN, 10);
-            g.setFont(f);
+            g2d.setFont(f);
             for (x=0;x<mapTiles.length;x++)
             {
                 for(y=0;y<mapTiles[0].length;y++)
                 {
                     if(mapTiles[x][y]!=null)
                     {
-                        g.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                        g2d.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
                     }
                     else
                     {
-                            g.setColor(Color.BLACK);
-                            g.fillRect(cameraOffsetX+x*32, cameraOffsetY+y*32,32,32);
-                            g.setColor(Color.CYAN);
-                            g.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
+                        g2d.setColor(Color.BLACK);
+                        g2d.fillRect(cameraOffsetX+x*32, cameraOffsetY+y*32,32,32);
+                        g2d.setColor(Color.CYAN);
+                        g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
                     }
                     if(drawText)
                     {
-                        g.setColor(Color.CYAN);
-                        g.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
+                        g2d.setColor(Color.CYAN);
+                        g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
                         if(unitTiles[x][y]!=null)
                         {
-                            g.setColor(Color.RED);
-                            g.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
+                            g2d.setColor(Color.RED);
+                            g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
                         }
                     }
                 }
@@ -182,7 +205,7 @@ public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {
                 for(y=0;y<mapTiles[0].length;y++)
                 {
                     if(unitTiles[x][y]!=null)
-                        g.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                        g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
 
 
                 }
