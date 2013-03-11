@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;
+import java.io.File;                               //TODO: make debug levels. i.e. for 1 only errors, for 2, more informations, for 3 wall of text
 
 /**
  * Created with IntelliJ IDEA.
@@ -61,14 +61,14 @@ public class XMLSettingsCreator {
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
 
-                File f=new File(argv[0]);
+                File f=new File(argv[0]+"settings.xml");
             if(f.exists())
             {
                 f.delete();
             }
             StreamResult result;
 
-                result = new StreamResult(new File(argv[0]));
+                result = new StreamResult(new File(argv[0]+"settings.xml"));
 
             // Output to console for testing
             // StreamResult result = new StreamResult(System.out);

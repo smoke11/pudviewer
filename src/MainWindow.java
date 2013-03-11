@@ -20,7 +20,7 @@ public class MainWindow implements ToolboxListenerMainWindow{
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"; //use this to change path to files of this program
+        private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
@@ -73,9 +73,9 @@ public class MainWindow implements ToolboxListenerMainWindow{
                 public void run() {
                     createAndShowGUI();
                     File XMLfile = new File(mainDir+"settings.xml");
-                    if(!XMLfile.exists())
+                    if(true)//!XMLfile.exists()) //TODO: when not needed debug, make checking if file exists
                     {
-                        XMLSettingsCreator.main(new String[]{mainDir+"settings.xml"});
+                        XMLSettingsCreator.main(new String[]{mainDir});
                     }
 
                     loadMap();
@@ -89,7 +89,7 @@ public class MainWindow implements ToolboxListenerMainWindow{
         File XMLfile = new File(mainDir+"settings.xml");
         if(!XMLfile.exists())
         {
-            f.openXMLFile();
+            f.openXMLFile(mainDir);
             XMLfile = f.OpenedXMLFile;
         }
         if(XMLfile !=null)

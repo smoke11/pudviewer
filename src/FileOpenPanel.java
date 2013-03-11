@@ -13,6 +13,21 @@ public class FileOpenPanel extends JPanel
 {
     public File OpenedMapFile;
     public File OpenedXMLFile;
+    public void openXMLFile(String dir) {
+        JFileChooser fileChooser = new JFileChooser();
+        FileFilter filter1 = new ExtensionFileFilter(".xml", new String[] { "xml" });
+        fileChooser.setFileFilter(filter1);
+
+
+        fileChooser.setCurrentDirectory(new File(dir));
+        fileChooser.setAccessory(new LabelAccessory(fileChooser));
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            OpenedXMLFile = fileChooser.getSelectedFile();
+            System.out.println("Selected file: " + OpenedXMLFile.getAbsolutePath());
+        }
+    }
     public void openXMLFile() {
         JFileChooser fileChooser = new JFileChooser();
         FileFilter filter1 = new ExtensionFileFilter(".xml", new String[] { "xml" });
