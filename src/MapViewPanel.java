@@ -1,5 +1,6 @@
 
 import smoke11.pudparser.Tile;
+import sun.text.CodePointIterator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,10 +20,12 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     private Tile[][] mapTiles;
     private Tile[][] unitTiles;
     private int cameraOffsetX=0,cameraOffsetY=0;
-    private int mouseLastX=0,mouseLastY=0;
+    private int mouseLastX=0,mouseLastY=0; //used for cameraoffset
+    private int actualMouseX=0, actualMouseY=0;
     private boolean drawText = false;
     private boolean realTimeMoving = true;
-    private boolean movingPanelInsteadCamera = true;  //if true panel will be moved insted drawing again (with diff camera offset) which should be faster but its buggy
+    private boolean movingPanelInsteadCamera = true;  //if true panel will be moved instead drawing again (with diff camera offset) which should be faster but its buggy
+    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor
     private boolean mouseClicked=false;
     private JPanel panel;   //for moving panel
     public MapViewPanel(Dimension d, boolean fastermovingcamera)
@@ -41,7 +44,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     cameraOffsetX+=e.getX()-mouseLastX;
                     cameraOffsetY+=e.getY()-mouseLastY;
                     System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
-                    makeRepaint();
+                    if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
+                        makeRepaint();
                 }
                 mouseClicked=false;
             }
@@ -51,6 +55,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     mouseLastX=e.getX();
                     mouseLastY=e.getY();
                 mouseClicked=true;
+                if(!drawTileBoxAlways) //draw tile box if clicking
+                    repaint();
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -72,35 +78,41 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             public void mouseDragged(MouseEvent e) {
                 if(realTimeMoving)
                 {
-                    int mouseX =e.getX();
-                    int mouseY=e.getY();
+                    actualMouseX=e.getX();
+                    actualMouseY=e.getY();
                     if(movingPanelInsteadCamera)
                     {
                         int x = (int)panel.getLocation().getX();
                         int y = (int)panel.getLocation().getY();
 
-                        panel.setLocation(x+mouseX-mouseLastX,y+mouseY-mouseLastY);
+                        panel.setLocation(x+actualMouseX-mouseLastX,y+actualMouseY-mouseLastY);
                         System.out.println("Panel position: "+(int)panel.getLocation().getX()+", "+(int)panel.getLocation().getY());
                     }
                     else
                     {
-                        cameraOffsetX+=mouseX-mouseLastX;
-                        cameraOffsetY+=mouseY-mouseLastY;
+                        cameraOffsetX+=actualMouseX-mouseLastX;
+                        cameraOffsetY+=actualMouseY-mouseLastY;
                         System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
                     }
-                    mouseLastX=mouseX;
-                    mouseLastY=mouseY;
-                    makeRepaint();
+                    mouseLastX=actualMouseX;
+                    mouseLastY=actualMouseY;
+                    if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
+                        makeRepaint();
 
                 }
             }
 
             @Override
             public void mouseMoved(MouseEvent e) {
+                actualMouseX=e.getX();
+                actualMouseY=e.getY();
+                if(drawTileBoxAlways)
+                    makeRepaint();
             }
         });
 
-        this.repaint();
+        if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
+            makeRepaint();
     }
     private void makeRepaint()
     {
@@ -143,6 +155,37 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                         g2d.setColor(Color.CYAN);
                         g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
                     }
+
+                }
+            }
+            for (x=0;x<mapTiles.length;x++)   //make this as list to draw
+            {
+                for(y=0;y<mapTiles[0].length;y++)
+                {
+                    if(unitTiles[x][y]!=null)
+                    {
+                        if(unitTiles[x][y].Name.contains("Human")||unitTiles[x][y].Name.contains("Orc")) //all building have race in name. if building draw normally
+                            g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                        else //if not building calculate real drawing x,y for unit and draw
+                        {
+                            Point truepos = calculateUnitDrawingPosition(x,y,1,unitSprites[unitTiles[x][y].ID]);
+                            g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+truepos.x, cameraOffsetY+truepos.y, this);
+                        }
+                    }
+                    if(drawTileBoxAlways)
+                    {
+                        int tilex = (actualMouseX-cameraOffsetX)/32;
+                        int tiley = (actualMouseY-cameraOffsetY)/32;
+                        g2d.setColor(Color.WHITE);
+                        g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
+                    }
+                    else if(mouseClicked)//draw tile box only if mouse was clicked
+                    {
+                        int tilex = (actualMouseX-cameraOffsetX)/32;
+                        int tiley = (actualMouseY-cameraOffsetY)/32;
+                        g2d.setColor(Color.WHITE);
+                        g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
+                    }
                     if(drawText)
                     {
                         g2d.setColor(Color.CYAN);
@@ -153,15 +196,6 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                             g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
                         }
                     }
-                }
-            }
-            for (x=0;x<mapTiles.length;x++)   //make this as list to draw
-            {
-                for(y=0;y<mapTiles[0].length;y++)
-                {
-                    if(unitTiles[x][y]!=null)
-                        g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
-
 
                 }
             }
@@ -169,12 +203,31 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
         }
     }
 
-
+    private Point calculateUnitDrawingPosition(int tileX, int tileY, int howManyTilesUse, BufferedImage unitSprite) //howManyTilesUse, for most of units its 1(1x1) (for air and water its 2x2), its how much space it can take
+    {
+         Point result = new Point(tileX*32,tileY*32);
+        int spritesizex = result.x+unitSprite.getWidth();
+        int tilesizex = result.x+howManyTilesUse*32;
+         int spritesizey = result.y+unitSprite.getHeight();
+         int tilesizey = result.y+howManyTilesUse*32;
+         int newx=tileX*32,newy=tileY*32;
+        if(spritesizex>tilesizex)//if sprite taking more space that tile can offer, move starting y
+            newx=result.x-(spritesizex-tilesizex);
+         if(spritesizey>tilesizey)//if sprite taking more space that tile can offer, move starting y
+            newy=result.y-(spritesizey-tilesizey);
+         return new Point(newx,newy); //returning point is alredy multiply by 32
+    }
     @Override
-    public void buttonPressed(ToolboxEvents e) {
+    public void showID(ToolboxEvents e) {
         drawText =!drawText;
         System.out.println("Drawing id info: "+drawText);
-        super.repaint();
+        if(!drawTileBoxAlways)   //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
+            makeRepaint();
+    }
+
+    @Override
+    public void drawTilebox(ToolboxEvents e) {
+       drawTileBoxAlways=!drawTileBoxAlways;
     }
 }
 

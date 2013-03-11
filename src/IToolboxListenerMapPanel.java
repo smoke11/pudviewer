@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 public interface IToolboxListenerMapPanel {
-    public void buttonPressed(ToolboxEvents e);
+    public void showID(ToolboxEvents e);
+    public void drawTilebox(ToolboxEvents e);
 }
 

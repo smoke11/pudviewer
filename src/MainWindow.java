@@ -22,7 +22,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
         private boolean movingPanelInsteadCamera = false;  //if true panel will be moved insted drawing again (with diff camera offset) which should be faster but its buggy
-        private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\"; //use this to change path to files of this program
+        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\"; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {

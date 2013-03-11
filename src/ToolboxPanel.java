@@ -19,7 +19,7 @@ public class ToolboxPanel extends JPanel implements ActionListener {
     {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         this.setPreferredSize(d);
-        this.setLayout(new GridLayout(0,8));
+        this.setLayout(new FlowLayout());
 
         this.setVisible(true);
         JButton showID = new JButton();
@@ -30,8 +30,13 @@ public class ToolboxPanel extends JPanel implements ActionListener {
         loadMap.setText("Load Map");
         loadMap.addActionListener(this);
 
+        JButton drawTileBox = new JButton();
+        drawTileBox.setText("Tilebox drawing");
+        drawTileBox.addActionListener(this);
+
         super.add(showID);
         super.add(loadMap);
+        super.add(drawTileBox);
 
 
     }
@@ -51,17 +56,23 @@ public class ToolboxPanel extends JPanel implements ActionListener {
         ToolboxEvents e = new ToolboxEvents(this);
         Iterator i1 = _mapViewListeners.iterator();
         Iterator i2 = _mainWindowListeners.iterator();
-            if(whatToFire.equalsIgnoreCase("Show ID"))
+            if(whatToFire.equalsIgnoreCase("Load Map"))
             {
-                while(i1.hasNext())	{
-                ((IToolboxListenerMapPanel) i1.next()).buttonPressed(e);
+                while(i2.hasNext())	{
+                    ((IToolboxListenerMainWindow) i2.next()).loadMap(e);
                 }
+
             }
             else
             {
-                while(i2.hasNext())	{
-                ((IToolboxListenerMainWindow) i2.next()).loadMap(e);
-                }
+                if(whatToFire.equalsIgnoreCase("Show ID"))
+                    while(i1.hasNext())	{
+                        ((IToolboxListenerMapPanel) i1.next()).showID(e);
+                    }
+                else
+                    while(i1.hasNext())	{
+                        ((IToolboxListenerMapPanel) i1.next()).drawTilebox(e);
+                    }
             }
 
     }
