@@ -35,16 +35,16 @@ public class ToolboxPanel extends JPanel implements ActionListener {
 
 
     }
-    public synchronized void addEventListener(ToolboxListenerMapPanel listener)  {
+    public synchronized void addEventListener(IToolboxListenerMapPanel listener)  {
         	    _mapViewListeners.add(listener);
         	  }
-    public synchronized void removeEventListener(ToolboxListenerMapPanel listener)   {
+    public synchronized void removeEventListener(IToolboxListenerMapPanel listener)   {
         _mapViewListeners.remove(listener);
     	  }
-    public synchronized void addEventListener(ToolboxListenerMainWindow listener)  {
+    public synchronized void addEventListener(IToolboxListenerMainWindow listener)  {
         _mainWindowListeners.add(listener);
     }
-    public synchronized void removeEventListener(ToolboxListenerMainWindow listener)   {
+    public synchronized void removeEventListener(IToolboxListenerMainWindow listener)   {
         _mainWindowListeners.remove(listener);
     }
     private synchronized void fireEvent(String whatToFire)	{
@@ -54,13 +54,13 @@ public class ToolboxPanel extends JPanel implements ActionListener {
             if(whatToFire.equalsIgnoreCase("Show ID"))
             {
                 while(i1.hasNext())	{
-                ((ToolboxListenerMapPanel) i1.next()).buttonPressed(e);
+                ((IToolboxListenerMapPanel) i1.next()).buttonPressed(e);
                 }
             }
             else
             {
                 while(i2.hasNext())	{
-                ((ToolboxListenerMainWindow) i2.next()).loadMap(e);
+                ((IToolboxListenerMainWindow) i2.next()).loadMap(e);
                 }
             }
 

@@ -135,7 +135,7 @@ class LabelAccessory extends JLabel implements PropertyChangeListener {
                 {
                     PudParser p = new PudParser();
                     p.getInfoFromFile(file);
-                    text="Title: "+p.Title+"<br />Desc: "+p.Desc+"<br />Dimension: "+p.DimX+"x"+p.DimY+"<br />Terrain Type: "+p.TerrainType+"<br />Use custom data:<br />Units: "+p.CustomUnitData+"<br />Upgrades: "+p.CustomUpgradeData+"<br />Num. of Units on map: "+p.NumberofUnitsOnMap;           //hack with html to make new line
+                    text="Title: "+p.pudTitle +"<br />pudDesc: "+p.pudDesc +"<br />Dimension: "+p.dimX +"x"+p.dimY +"<br />Terrain Type: "+p.terrainType +"<br />Use custom data:<br />Units: "+p.customUnitData +"<br />Upgrades: "+p.customUpgradeData +"<br />Num. of Units on map: "+p.NumberofUnitsOnMap;           //hack with html to make new line
                 }
             }
         }

@@ -6,7 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-    public interface ToolboxListenerMainWindow {
+    public interface IToolboxListenerMainWindow {
         public void loadMap(ToolboxEvents e);
     }
 

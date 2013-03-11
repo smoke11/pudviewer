@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  * To change this template use File | Settings | File Templates.
  */
 public class SpritesheetParser {
-    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][][] tiles)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet,  Tile[][][] tiles)
     {
         BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length*tiles[0][0].length];
@@ -28,7 +28,7 @@ public class SpritesheetParser {
                         if(lastID!=tiles[i1][i2][i3].ID)
                         {
                             lastID=tiles[i1][i2][i3].ID;
-                            sprites[lastID]=ToCompatibleImage(spritesheet.getSubimage(tiles[i1][i2][i3].OffsetX,tiles[i1][i2][i3].OffsetY, tiles[i1][i2][i3].Size,tiles[i1][i2][i3].Size));
+                            sprites[lastID]= toCompatibleImage(spritesheet.getSubimage(tiles[i1][i2][i3].OffsetX, tiles[i1][i2][i3].OffsetY, tiles[i1][i2][i3].Size, tiles[i1][i2][i3].Size));
 
                         }
                     }
@@ -39,7 +39,7 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static BufferedImage[] CutSpriteSheet(BufferedImage[] spritesheets, String[] ifThisContainsUseImage, Tile[][] tiles)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage[] spritesheets, String[] ifThisContainsUseImage, Tile[][] tiles)
     {
         BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
@@ -56,7 +56,7 @@ public class SpritesheetParser {
                         for (int n=0;n<ifThisContainsUseImage.length;n++)
                         {
                             if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n]))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
-                                sprites[lastID]=ToCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
+                                sprites[lastID]= toCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size));
 
                         }
 
@@ -69,7 +69,7 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
     {
         BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
@@ -84,9 +84,9 @@ public class SpritesheetParser {
                     {
                         lastID=tiles[i1][i2].ID;
                         if(tiles[i1][i2].Name.contains(ifThisContainsUseFirstImage))
-                            sprites[lastID]=ToCompatibleImage(spritesheet1.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
+                            sprites[lastID]= toCompatibleImage(spritesheet1.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size));
                         else
-                            sprites[lastID]=ToCompatibleImage(spritesheet2.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
+                            sprites[lastID]= toCompatibleImage(spritesheet2.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size));
 /*                            File outputfile = new File(SpritesheetParser.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"saved.png");
                             try {
                                 ImageIO.write(spritesheet.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size), "png", outputfile);
@@ -103,7 +103,7 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[][] tiles)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet,  Tile[][] tiles)
     {
         BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
@@ -117,7 +117,7 @@ public class SpritesheetParser {
                         if(lastID!=tiles[i1][i2].ID)
                         {
                             lastID=tiles[i1][i2].ID;
-                            sprites[lastID]=ToCompatibleImage(spritesheet.getSubimage(tiles[i1][i2].OffsetX,tiles[i1][i2].OffsetY, tiles[i1][i2].Size,tiles[i1][i2].Size));
+                            sprites[lastID]= toCompatibleImage(spritesheet.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size));
 /*                            File outputfile = new File(SpritesheetParser.class.getProtectionDomain().getCodeSource().getLocation().getPath()+"saved.png");
                             try {
                                 ImageIO.write(spritesheet.getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].Size, tiles[i1][i2].Size), "png", outputfile);
@@ -134,19 +134,19 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static BufferedImage[] CutSpriteSheet(BufferedImage spritesheet,  Tile[] tiles)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet, Tile[] tiles)
     {
         BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length];
         int i = 0;
          for (Tile tile : tiles)
          {
-             sprites[i]=ToCompatibleImage(spritesheet.getSubimage(tile.OffsetX,tile.OffsetY, tile.Size,tile.Size));
+             sprites[i]= toCompatibleImage(spritesheet.getSubimage(tile.OffsetX, tile.OffsetY, tile.Size, tile.Size));
              i++;
          }
          return sprites;
     }
-    private static BufferedImage ToCompatibleImage(BufferedImage image) //http://stackoverflow.com/questions/196890/java2d-performance-issues
+    private static BufferedImage toCompatibleImage(BufferedImage image) //http://stackoverflow.com/questions/196890/java2d-performance-issues
     {
         // obtain the current system graphical settings
         GraphicsConfiguration gfx_config = GraphicsEnvironment.

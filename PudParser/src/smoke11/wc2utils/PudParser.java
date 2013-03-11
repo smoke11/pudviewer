@@ -11,24 +11,26 @@ import java.io.*;
  */
 public class PudParser {
     //info data
-    public String Title, Desc, TerrainType;
-    public int DimX, DimY, NumberofUnitsOnMap;
-    public boolean CustomUnitData, CustomUpgradeData;
+    public String pudTitle, pudDesc, terrainType;
+    public int dimX, dimY, numberofUnitsOnMap;
+    public boolean customUnitData, customUpgradeData;
     int numberOfBytes = 0, read=0;
     //map data
-    public byte[][][] TerrainTiles; //x,y,word
-    public String[] UnitTiles; //indexes - number of unit, values separated by ';': x;y;unittype;owner;word-if gold mine or oil well, contains 2500 * this otherwise 0 passive 1 active
+    private byte[][][] mapDataTiles; //x,y,word
+    private String[] unitTilesString; //indexes - number of unit, values separated by ';': x;y;unittype;owner;word-if gold mine or oil well, contains 2500 * this otherwise 0 passive 1 active
+    public Tile[][] mapTiles;
+    public Tile[][] unitTiles;
     public void getMapDataFromFile(File file)
     {
         FileInputStream fin = null;
-        if(DimX==0||DimY==0)
+        if(dimX ==0|| dimY ==0)
             getInfoFromFile(file);
         try {
             fin = new FileInputStream(file);
             DataInputStream din = new DataInputStream(fin);
             byte[] _actualtitle = new byte[4];     //name of actual section
             byte[] _actuallength = new byte[4];    // length of actual section
-            byte[][][] _maptiles = new byte[DimX][DimY][2];
+            byte[][][] _maptiles = new byte[dimX][dimY][2];
             boolean readmaptiles=false, readunitdata=false;
             String actualTitleText ="";
             long actuallength=0;
@@ -40,17 +42,17 @@ public class PudParser {
                 actualTitleText=new String(_actualtitle,"UTF-8");
                 if(actualTitleText.equalsIgnoreCase("MTXM"))    //read Section 'MTXM', tiles map
                 {
-                    readBytes(DimX,DimY,2,_maptiles, din);
-                    TerrainTiles = _maptiles;
+                    readBytes(dimX, dimY,2,_maptiles, din);
+                    mapDataTiles = _maptiles;
                     readmaptiles=true;
                 }
                 else if(actualTitleText.equalsIgnoreCase("UNIT"))  //read UNIT section
                 {
-                    UnitTiles = new String [NumberofUnitsOnMap];
+                    unitTilesString = new String [numberofUnitsOnMap];
                      byte[] unitdata;
                      int[] numberofbytesforinfo=new int[]{2,2,1,1,2};
                      int count=0;
-                     for (int i=0;i<NumberofUnitsOnMap;i++)
+                     for (int i=0;i<numberofUnitsOnMap;i++)
                      {
                          unitdata = new byte[(2+2+1+1+2)];
                          readBytes((2+2+1+1+2),unitdata,din);
@@ -71,7 +73,7 @@ public class PudParser {
                              s+=";";
                              count+=z;
                          }
-                         UnitTiles[i]=s;
+                         unitTilesString[i]=s;
                      }
                     readunitdata=true;
                 }
@@ -93,7 +95,7 @@ public class PudParser {
     public void getInfoFromFile(File file)
     {
         try {
-            Title = file.getName().substring(0,file.getName().indexOf('.'));
+            pudTitle = file.getName().substring(0,file.getName().indexOf('.'));
             FileInputStream fin = new FileInputStream(file);
             DataInputStream din = new DataInputStream(fin);
             byte[] _actualtitle = new byte[4];     //name of actual section
@@ -118,14 +120,14 @@ The pud format consist of many sections, all sections start the same way:
                 if(actualTitleText.equalsIgnoreCase("DESC"))  //read DESC section
                 {
                     readBytes(32,_desc, din);
-                    Desc=new String(_desc,"UTF-8");
+                    pudDesc =new String(_desc,"UTF-8");
                     readDesc=true;
                 }
                 else if(actualTitleText.equalsIgnoreCase("DIM "))  //read DIM section
                 {
                     readBytes(4,_dim, din);
-                    DimX=Math.abs(_dim[0]);
-                    DimY=Math.abs(_dim[2]);
+                    dimX =Math.abs(_dim[0]);
+                    dimY =Math.abs(_dim[2]);
                     readDim=true;
 
                 }
@@ -135,19 +137,19 @@ The pud format consist of many sections, all sections start the same way:
                     switch (_terraintype[0])
                     {
                         case 0:
-                            TerrainType="Forest";
+                            terrainType ="Forest";
                             break;
                         case 1:
-                            TerrainType="Winter";
+                            terrainType ="Winter";
                             break;
                         case 2:
-                            TerrainType="Wasteland";
+                            terrainType ="Wasteland";
                             break;
                         case 3:
-                            TerrainType="Swamp";
+                            terrainType ="Swamp";
                             break;
                         default:
-                            TerrainType="Forest";
+                            terrainType ="Forest";
                             break;
 
                     }
@@ -156,7 +158,7 @@ The pud format consist of many sections, all sections start the same way:
                 else if(actualTitleText.equalsIgnoreCase("UDTA"))    //read UDTA section
                 {
                     readBytes(2,_customunit, din);
-                    CustomUnitData=convertIntToBoolean(_customunit[0]);
+                    customUnitData =convertIntToBoolean(_customunit[0]);
                     readCustomUnitData=true;
                     //skip rest of section
                     din.skipBytes((int)actuallength-2);//skip rest of section
@@ -165,7 +167,7 @@ The pud format consist of many sections, all sections start the same way:
                 else if(actualTitleText.equalsIgnoreCase("UGRD"))    //read UGRD section
                 {
                     readBytes(2,_customupgrade, din);
-                    CustomUpgradeData=convertIntToBoolean(_customupgrade[0]);
+                    customUpgradeData =convertIntToBoolean(_customupgrade[0]);
                     readCustomUpgradeData=true;
                     //skip rest of section
                     din.skipBytes((int)actuallength-2);
@@ -173,7 +175,7 @@ The pud format consist of many sections, all sections start the same way:
                 }
                 else if(actualTitleText.equalsIgnoreCase("UNIT"))  //read UNIT section
                 {
-                    NumberofUnitsOnMap = (int)(actuallength/(2+2+1+1+2));
+                    numberofUnitsOnMap = (int)(actuallength/(2+2+1+1+2));
                     readUnitData=true;
                 }
                 else //skip rest of data
@@ -187,6 +189,59 @@ The pud format consist of many sections, all sections start the same way:
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+
+    }
+    public void prepareTiles(Tile[][][] terrainTilesInfo, Tile[][] unitTilesInfo)
+    {
+        String s1="", s2="";
+        int x=0,y=0;
+        Integer i=0;
+        mapTiles = new Tile[mapDataTiles.length][mapDataTiles[0].length];
+        unitTiles = new Tile[mapDataTiles.length][mapDataTiles[0].length];
+        //terrain
+        for (x=0;x< mapDataTiles.length;x++)
+        {
+            for(y=0;y< mapDataTiles[0].length;y++)
+            {
+                i=0;
+                s1=String.format("%02X", mapDataTiles[x][y][1]);
+                s2=String.format("%02X", mapDataTiles[x][y][0]);
+                int i2,i3,i4;
+                i2=Integer.parseInt(s1.substring(1));
+                char c = Character.toLowerCase(s2.charAt(0));
+                if(c>='a')
+                    i3=(10+(c-'a'));
+                else
+                    i3=Integer.parseInt(s2.substring(0,1));
+                c = Character.toLowerCase(s2.charAt(1));
+                if(c>='a')
+                    i4=(10+(c-'a'));
+                else
+                    i4=Integer.parseInt(s2.substring(1));
+                mapTiles[x][y]=terrainTilesInfo[i2][i3][i4];
+
+            }
+        }
+        //buildings
+        for (String unit : unitTilesString)
+        {
+            String[] info = unit.split(";");
+            int coorX =Integer.parseInt(info[0])/10; //because second byte adds 0
+            int coorY =Integer.parseInt(info[1])/10;
+            String ID = info[2];
+            int i1,i2;
+            char c = Character.toLowerCase(ID.charAt(0));
+            if(c>='a')
+                i1=(10+(c-'a'));
+            else
+                i1=Integer.parseInt(ID.substring(0,1));
+            c = Character.toLowerCase(ID.charAt(1));
+            if(c>='a')
+                i2=(10+(c-'a'));
+            else
+                i2=Integer.parseInt(ID.substring(1,2));
+            unitTiles[coorX][coorY]=unitTilesInfo[i1][i2];
         }
 
     }

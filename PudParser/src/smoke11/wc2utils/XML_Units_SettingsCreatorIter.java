@@ -30,7 +30,7 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
             Document doc = docBuilder.newDocument();
-            Element rootElement = doc.createElement("UnitTiles");
+            Element rootElement = doc.createElement("unitTilesString");
             doc.appendChild(rootElement);
             Element tile;
             //id

@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
  * Time: 19:09
  * To change this template use File | Settings | File Templates.
  */
-public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {  //http://stackoverflow.com/questions/148478/java-2d-drawing-optimal-performance
+public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {   //http://stackoverflow.com/questions/148478/java-2d-drawing-optimal-performance
     private BufferedImage[] terrainSprites;
     private BufferedImage[] unitSprites;
     private Tile[][] mapTiles;
@@ -110,57 +110,11 @@ public class MapViewPanel extends JPanel implements ToolboxListenerMapPanel {  /
         terrainSprites =tileSprites;
         unitSprites=unitsSprites;
     }
-    public void prepareTiles(byte[][][] MapDataTiles, String[] UnitData, Tile[][][] terrainTilesInfo, Tile[][] unitTilesInfo) //TODO: this logic should be in pudparser
+    public void prepareTiles(Tile[][] MapTiles, Tile[][] UnitTiles)
     {
-        String s1="", s2="";
-        int x=0,y=0;
-        Integer i=0;
-        mapTiles = new Tile[MapDataTiles.length][MapDataTiles[0].length];
-        unitTiles = new Tile[MapDataTiles.length][MapDataTiles[0].length];
-        //terrain
-        for (x=0;x<MapDataTiles.length;x++)
-        {
-            for(y=0;y<MapDataTiles[0].length;y++)
-            {
-                i=0;
-                s1=String.format("%02X", MapDataTiles[x][y][1]);
-                s2=String.format("%02X", MapDataTiles[x][y][0]);
-                int i2,i3,i4;
-                i2=Integer.parseInt(s1.substring(1));
-                char c = Character.toLowerCase(s2.charAt(0));
-                if(c>='a')
-                    i3=(10+(c-'a'));
-                else
-                    i3=Integer.parseInt(s2.substring(0,1));
-                c = Character.toLowerCase(s2.charAt(1));
-                if(c>='a')
-                    i4=(10+(c-'a'));
-                else
-                    i4=Integer.parseInt(s2.substring(1));
-                mapTiles[x][y]=terrainTilesInfo[i2][i3][i4];
 
-            }
-        }
-        //buildings
-        for (String unit : UnitData)
-        {
-            String[] info = unit.split(";");
-            int coorX =Integer.parseInt(info[0])/10; //because second byte adds 0
-            int coorY =Integer.parseInt(info[1])/10;
-            String ID = info[2];
-            int i1,i2;
-            char c = Character.toLowerCase(ID.charAt(0));
-            if(c>='a')
-                i1=(10+(c-'a'));
-            else
-                i1=Integer.parseInt(ID.substring(0,1));
-            c = Character.toLowerCase(ID.charAt(1));
-            if(c>='a')
-                i2=(10+(c-'a'));
-            else
-                i2=Integer.parseInt(ID.substring(1,2));
-            unitTiles[coorX][coorY]=unitTilesInfo[i1][i2];
-        }
+        mapTiles = MapTiles;
+        unitTiles = UnitTiles;
 
     }
     @Override public void paintComponent(Graphics g) {

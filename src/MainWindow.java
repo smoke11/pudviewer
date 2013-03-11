@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-public class MainWindow implements ToolboxListenerMainWindow{
+public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
@@ -67,7 +67,7 @@ public class MainWindow implements ToolboxListenerMainWindow{
 
         }
 
-        public void Run(String[] args) {
+        public void run(String[] args) {
             //Schedule a job for the event-dispatching thread:
             //creating and showing this application's GUI.
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -135,8 +135,8 @@ public class MainWindow implements ToolboxListenerMainWindow{
                         "Axethrower"
                 };
 
-                BufferedImage[] unitTiles = SpritesheetParser.CutSpriteSheet(spritesheets,recogniseWith, XMLPudSettingsReader.UnitTiles); //=  SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.UnitTiles);
-                mapViewPanel.setImages(unitTiles,SpritesheetParser.CutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3]+"summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
+                BufferedImage[] unitTiles = SpritesheetParser.cutSpriteSheet(spritesheets, recogniseWith, XMLPudSettingsReader.UnitTiles); //=  SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.unitTilesString);
+                mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
             }
             catch (IOException e) {
                 System.out.println("Can`t read summertiles.png");
@@ -158,12 +158,11 @@ public class MainWindow implements ToolboxListenerMainWindow{
             PudParser p;
             p = new PudParser();
             p.getMapDataFromFile(f.OpenedMapFile);
-
-
-            mapViewPanel.prepareTiles(p.TerrainTiles,p.UnitTiles, XMLPudSettingsReader.SortedTerrainTiles, XMLPudSettingsReader.UnitTiles);
+            p.prepareTiles(XMLPudSettingsReader.SortedTerrainTiles, XMLPudSettingsReader.UnitTiles);
+            mapViewPanel.prepareTiles(p.mapTiles,p.unitTiles);
             firstTimeOpen=false;
             mapViewPanel.repaint();
-            return new Dimension(p.DimX*32,p.DimY*32);
+            return new Dimension(p.dimX *32,p.dimY *32);
 
         }
         return null;

@@ -5,7 +5,7 @@
  * Time: 22:07
  * To change this template use File | Settings | File Templates.
  */
-public interface ToolboxListenerMapPanel {
+public interface IToolboxListenerMapPanel {
     public void buttonPressed(ToolboxEvents e);
 }
 
