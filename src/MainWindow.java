@@ -125,6 +125,10 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/grunt.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/peasant.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/peon.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/ballista.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/catapult.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/knight.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/ogre.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/archer.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/axethrower.png"))
                 };
@@ -135,6 +139,10 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "Grunt",
                         "Peasant",
                         "Peon",
+                        "Ballista",
+                        "Catapult",
+                        "Knight",
+                        "Ogre",
                         "Archer",
                         "Axethrower"
                 };

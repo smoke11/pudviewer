@@ -112,31 +112,31 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             int[][] sizesX = new int[4][];
             int[][] sizesY = new int[4][];
             names = new String[4][];
-            names[0]=new String[]{"Footman","Peasant","Archer","Ballista","Knight","Mage","Paladin","Dwarves",  //TODO: get it back to regular order (i switched archer with ballista, because i get archer offsets already and i`m lazy)
+            names[0]=new String[]{"Footman","Peasant","Ballista","Knight","Archer","Mage","Paladin","Dwarves",  //TODO: get it back to regular order (i switched archer with ballista, because i get archer offsets already and i`m lazy)
             };
-            names[1] = new String[]{"Grunt","Peon","Axethrower","Catapult","Ogre","Death Knight","Ogre-Mage","Goblin Sapper"
+            names[1] = new String[]{"Grunt","Peon","Catapult","Ogre","Axethrower","Death Knight","Ogre-Mage","Goblin Sapper"
             };
             ids = new String[4][];
-            ids[0]=new String[]{"00","02","08","04","06","0a","0c","0e"};
-            ids[1]= new String[]{"01","03","09","05","07","0b","0d","0f"};
+            ids[0]=new String[]{"00","02","04","06","08","0a","0c","0e"};
+            ids[1]= new String[]{"01","03","05","07","09","0b","0d","0f"};
             allOffsetX = new int[4][];
             allOffsetY = new int[4][];
             //human
-            allOffsetX[0]=new int[]{22,12,6};   //TODO: Make better offsets and size (possible separate to sizex and sizey) for units
-            allOffsetY[0]=new int[]{10,1,14};
+            allOffsetX[0]=new int[]{22,16,3,24,6};
+            allOffsetY[0]=new int[]{10,8,0,9,11};
             //orc
-            allOffsetX[1]=new int[]{22,12,6};
-            allOffsetY[1]=new int[]{8,1,14};
+            allOffsetX[1]=new int[]{22,14,7,12,21};
+            allOffsetY[1]=new int[]{8,2,4,8,9};
 
             sizes = new int[4][];
-            sizesX[0]=new int[]{31,33,47};
-            sizesY[0]=new int[]{40,33,47};
-            sizesX[1]=new int[]{38,33,47};
-            sizesY[1]=new int[]{43,33,47};
+            sizesX[0]=new int[]{31,26,58,34,40};
+            sizesY[0]=new int[]{40,23,59,64,47};
+            sizesX[1]=new int[]{38,29,47,50,34};
+            sizesY[1]=new int[]{43,32,58,46,46};
 
             for (int i1=0;i1<2;i1++)//for each style of tiles
             {
-                for(int i2=0;i2<3;i2++)//for each unit
+                for(int i2=0;i2<sizesX[0].length;i2++)//for each unit
                 {
 
                     tile = doc.createElement("Unit");
