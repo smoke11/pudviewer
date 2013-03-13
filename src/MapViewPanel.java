@@ -211,8 +211,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
          int spritesizey = result.y+unitSprite.getHeight();
          int tilesizey = result.y+howManyTilesUse*32;
          int newx=tileX*32,newy=tileY*32;
-        if(spritesizex>tilesizex)//if sprite taking more space that tile can offer, move starting y
-            newx=result.x-(spritesizex-tilesizex);
+        if(spritesizex>tilesizex)//if sprite taking more space that tile can offer, move starting x
+            newx=result.x-(spritesizex-tilesizex)/2;
          if(spritesizey>tilesizey)//if sprite taking more space that tile can offer, move starting y
             newy=result.y-(spritesizey-tilesizey);
          return new Point(newx,newy); //returning point is alredy multiply by 32

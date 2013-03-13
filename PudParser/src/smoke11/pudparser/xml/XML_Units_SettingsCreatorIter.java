@@ -122,15 +122,15 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             allOffsetX = new int[4][];
             allOffsetY = new int[4][];
             //human
-            allOffsetX[0]=new int[]{17,12,6};   //TODO: Make better offsets and size (possible separate to sizex and sizey) for units
-            allOffsetY[0]=new int[]{5,1,14};
+            allOffsetX[0]=new int[]{22,12,6};   //TODO: Make better offsets and size (possible separate to sizex and sizey) for units
+            allOffsetY[0]=new int[]{10,1,14};
             //orc
             allOffsetX[1]=new int[]{22,12,6};
             allOffsetY[1]=new int[]{8,1,14};
 
             sizes = new int[4][];
-            sizesX[0]=new int[]{38,33,47};
-            sizesY[0]=new int[]{43,33,47};
+            sizesX[0]=new int[]{31,33,47};
+            sizesY[0]=new int[]{40,33,47};
             sizesX[1]=new int[]{38,33,47};
             sizesY[1]=new int[]{43,33,47};
 
