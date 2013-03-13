@@ -109,6 +109,8 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             doc.createComment("================\r\n");
             doc.createComment("UNITS");
             doc.createComment("================\r\n");
+            int[][] sizesX = new int[4][];
+            int[][] sizesY = new int[4][];
             names = new String[4][];
             names[0]=new String[]{"Footman","Peasant","Archer","Ballista","Knight","Mage","Paladin","Dwarves",  //TODO: get it back to regular order (i switched archer with ballista, because i get archer offsets already and i`m lazy)
             };
@@ -123,12 +125,14 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             allOffsetX[0]=new int[]{17,12,6};   //TODO: Make better offsets and size (possible separate to sizex and sizey) for units
             allOffsetY[0]=new int[]{5,1,14};
             //orc
-            allOffsetX[1]=new int[]{17,12,6};
-            allOffsetY[1]=new int[]{5,1,14};
+            allOffsetX[1]=new int[]{22,12,6};
+            allOffsetY[1]=new int[]{8,1,14};
 
             sizes = new int[4][];
-            sizes[0]=new int[]{45,33,47};
-            sizes[1]=new int[]{45,33,47};
+            sizesX[0]=new int[]{38,33,47};
+            sizesY[0]=new int[]{43,33,47};
+            sizesX[1]=new int[]{38,33,47};
+            sizesY[1]=new int[]{43,33,47};
 
             for (int i1=0;i1<2;i1++)//for each style of tiles
             {
@@ -146,8 +150,11 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
                     name.appendChild(doc.createTextNode(names[i1][i2]));
                     tile.appendChild(name);
                     //size
-                    size = doc.createElement("Size");
-                    size.appendChild(doc.createTextNode(String.valueOf(sizes[i1][i2])));
+                    size = doc.createElement("SizeX");
+                    size.appendChild(doc.createTextNode(String.valueOf(sizesX[i1][i2])));
+                    tile.appendChild(size);
+                    size = doc.createElement("SizeY");
+                    size.appendChild(doc.createTextNode(String.valueOf(sizesY[i1][i2])));
                     tile.appendChild(size);
                     //offsetx
                     offsetx = doc.createElement("OffsetX");
