@@ -146,8 +146,22 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "Archer",
                         "Axethrower"
                 };
-
-                BufferedImage[] unitTiles = SpritesheetParser.cutSpriteSheet(spritesheets, recogniseWith, XMLPudSettingsReader.UnitTiles); //=  SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.unitTilesString);
+                String[] ignoreIfHave = new String[]{ //sometimes there is a need to ignore some word in name. i.e. there is orc unit - Ogre and there is building Orc Ogre Mound. so there its needed to ignore word Orc for unit because it will choose building or vice versa
+                //if empty, ignore this
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "Orc",
+                        "",
+                        ""
+                };
+                BufferedImage[] unitTiles = SpritesheetParser.cutSpriteSheet(spritesheets, XMLPudSettingsReader.UnitTiles, recogniseWith, ignoreIfHave); //=  SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.unitTilesString);
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
             }
             catch (IOException e) {
