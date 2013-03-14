@@ -107,7 +107,7 @@ public class XMLPudSettingsReader {
                     String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     System.out.println("Name: " + name);
                     int size=-1, sizeX=-1, sizeY=-1;
-                    if((name.contains("Human")||name.contains("Orc"))&&(!name.contains("Oil Tanker")&&!name.contains("Transport")))   //TODO: make buildings have sizex and sizey so ignore this ifs
+                    if((name.contains("Human")||name.contains("Orc")||name.contains("Gold Mine")||name.contains("Oil Patch"))&&(!name.contains("Oil Tanker")&&!name.contains("Transport")))   //TODO: make buildings have sizex and sizey so ignore this ifs
                     {
                         size =   Integer.parseInt(eElement.getElementsByTagName("Size").item(0).getTextContent());
                         System.out.println("Size: " + size);
