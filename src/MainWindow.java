@@ -22,7 +22,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
         private boolean movingPanelInsteadCamera = false;  //if true panel will be moved insted drawing again (with diff camera offset) which should be faster but its buggy
-        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\"; //use this to change path to files of this program
+        private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
@@ -237,7 +237,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "",
                         "Roost", //orc unit dragon ignore orc building
                         "",
-                        "Tanker||Well" //misc building oil patch ignore orc and human units
+                        "Tanker;Well" //misc building oil patch ignore orc and human units
                 };
                 BufferedImage[] unitTiles = SpritesheetParser.cutSpriteSheet(spritesheets, XMLPudSettingsReader.UnitTiles, recogniseWith, ignoreIfHave); //=  SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.unitTilesString);
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));

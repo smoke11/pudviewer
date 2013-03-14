@@ -166,7 +166,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     {
                         if(unitSprites[unitTiles[x][y].ID]!=null)
                         {
-                        if(unitTiles[x][y].Name.contains("Human")||unitTiles[x][y].Name.contains("Orc")) //all building have race in name. if building draw normally
+                        if(unitTiles[x][y].Name.contains("Human")||unitTiles[x][y].Name.contains("Orc")
+                           ||unitTiles[x][y].Name.contains("Gold Mine")||unitTiles[x][y].Name.contains("Oil Patch")) //all building have race in name. if building draw normally
                             g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
                         else //if not building calculate real drawing x,y for unit and draw
                         {

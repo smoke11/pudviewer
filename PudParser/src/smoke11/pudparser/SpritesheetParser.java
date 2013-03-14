@@ -54,17 +54,24 @@ public class SpritesheetParser {
                         lastID=tiles[i1][i2].ID;
                         for (int n=0;n<spritesheets.length;n++) //because there can be more words than spritesheets
                         {
-                            if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n]))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings) Orc in ignore will mean that ignore all with Orc in name
+                            if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n]))
+                            {//using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings) Orc in ignore will mean that ignore all with Orc in name
                                 if(ifThisContainsIgnore[n]=="")
                                     sprites[lastID]= toCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].SizeX, tiles[i1][i2].SizeY));
-                                 else //if there is more than one word to ignore
+                                else //if there is more than one word to ignore
                                 {
-                                    String[] split = ifThisContainsIgnore[n].split("||");
+                                    int contains=0;
+                                    String[] split = ifThisContainsIgnore[n].split(";");
                                     for (int z=0;z<split.length;z++)
                                     {
-
+                                        if(tiles[i1][i2].Name.contains(split[z]))
+                                            contains++;
                                     }
+                                    if(contains==0)
+                                        sprites[lastID]= toCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].SizeX, tiles[i1][i2].SizeY));
+
                                 }
+                            }
                         }
 
                     }
