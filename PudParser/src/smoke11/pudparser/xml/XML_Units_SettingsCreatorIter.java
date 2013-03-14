@@ -112,27 +112,29 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             int[][] sizesX = new int[4][];
             int[][] sizesY = new int[4][];
             names = new String[4][];
-            names[0]=new String[]{"Footman","Peasant","Ballista","Knight","Archer","Mage","Paladin","Dwarves",  //TODO: get it back to regular order (i switched archer with ballista, because i get archer offsets already and i`m lazy)
+            names[0]=new String[]{"Footman","Peasant","Ballista","Knight","Archer","Mage","Paladin","Dwarves",
+                    "Human Oil Tanker", "Human Transport", "Elven Destroyer", "Battleship","Gnomish Submarine"
             };
-            names[1] = new String[]{"Grunt","Peon","Catapult","Ogre","Axethrower","Death Knight","Ogre-Mage","Goblin Sapper"
+            names[1] = new String[]{"Grunt","Peon","Catapult","Ogre","Axethrower","Death Knight","Ogre-Mage","Goblin Sapper",
+                    "Orc Oil Tanker", "Orc Transport", "Troll Destroyer", "Juggernaught", "Giant Turtle"
             };
             ids = new String[4][];
-            ids[0]=new String[]{"00","02","04","06","08","0a","0c","0e"};
-            ids[1]= new String[]{"01","03","05","07","09","0b","0d","0f"};
+            ids[0]=new String[]{"00","02","04","06","08","0a","0c","0e","1a","1c","1e","20","26"};
+            ids[1]= new String[]{"01","03","05","07","09","0b","0d","0f","1b","1d","1f","21","27"};
             allOffsetX = new int[4][];
             allOffsetY = new int[4][];
             //human
-            allOffsetX[0]=new int[]{22,16,3,24,6,22,24,12};
-            allOffsetY[0]=new int[]{10,8,0,9,11,7,9,7};
+            allOffsetX[0]=new int[]{22,16,3,24,6,22,24,12,19,4,4,19,9};
+            allOffsetY[0]=new int[]{10,8,0,9,11,7,9,7,0,0,5,6,13};
             //orc
-            allOffsetX[1]=new int[]{22,14,7,12,21,23,12,12};
-            allOffsetY[1]=new int[]{8,2,4,8,9,8,8,8};
+            allOffsetX[1]=new int[]{22,14,7,12,21,23,12,12,12,9,15,6,7};
+            allOffsetY[1]=new int[]{8,2,4,8,9,8,8,8,4,1,7,6,6};
 
             sizes = new int[4][];
-            sizesX[0]=new int[]{31,26,58,34,40,31,34,34};
-            sizesY[0]=new int[]{40,23,59,64,47,51,64,38};
-            sizesX[1]=new int[]{38,29,47,50,34,29,50,34};
-            sizesY[1]=new int[]{43,32,58,46,46,59,46,38};
+            sizesX[0]=new int[]{31,26,58,34,40,31,34,34,29,60,51,52,55};
+            sizesY[0]=new int[]{40,23,59,64,47,51,64,38,72,72,83,82,58};
+            sizesX[1]=new int[]{38,29,47,50,34,29,50,34,45,53,61,88,72};
+            sizesY[1]=new int[]{43,32,58,46,46,59,46,38,65,69,80,87,66};
 
             for (int i1=0;i1<2;i1++)//for each style of tiles
             {

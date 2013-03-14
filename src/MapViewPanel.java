@@ -25,7 +25,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     private boolean drawText = false;
     private boolean realTimeMoving = true;
     private boolean movingPanelInsteadCamera = true;  //if true panel will be moved instead drawing again (with diff camera offset) which should be faster but its buggy
-    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor
+    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor //TODO: add tilebox drawing only on units and buildings
     private boolean mouseClicked=false;
     private JPanel panel;   //for moving panel
     public MapViewPanel(Dimension d, boolean fastermovingcamera)
@@ -175,7 +175,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                         }
                         }
                     }
-                    if(drawTileBoxAlways)
+                    if(drawTileBoxAlways)         //TODO: drawing this as other panel that can be moved, not as repaint all
                     {
                         int tilex = (actualMouseX-cameraOffsetX)/32;
                         int tiley = (actualMouseY-cameraOffsetY)/32;
