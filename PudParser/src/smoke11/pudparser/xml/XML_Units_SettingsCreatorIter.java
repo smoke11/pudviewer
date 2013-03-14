@@ -122,17 +122,17 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             allOffsetX = new int[4][];
             allOffsetY = new int[4][];
             //human
-            allOffsetX[0]=new int[]{22,16,3,24,6};
-            allOffsetY[0]=new int[]{10,8,0,9,11};
+            allOffsetX[0]=new int[]{22,16,3,24,6,22,24,12};
+            allOffsetY[0]=new int[]{10,8,0,9,11,7,9,7};
             //orc
-            allOffsetX[1]=new int[]{22,14,7,12,21};
-            allOffsetY[1]=new int[]{8,2,4,8,9};
+            allOffsetX[1]=new int[]{22,14,7,12,21,23,12,12};
+            allOffsetY[1]=new int[]{8,2,4,8,9,8,8,8};
 
             sizes = new int[4][];
-            sizesX[0]=new int[]{31,26,58,34,40};
-            sizesY[0]=new int[]{40,23,59,64,47};
-            sizesX[1]=new int[]{38,29,47,50,34};
-            sizesY[1]=new int[]{43,32,58,46,46};
+            sizesX[0]=new int[]{31,26,58,34,40,31,34,34};
+            sizesY[0]=new int[]{40,23,59,64,47,51,64,38};
+            sizesX[1]=new int[]{38,29,47,50,34,29,50,34};
+            sizesY[1]=new int[]{43,32,58,46,46,59,46,38};
 
             for (int i1=0;i1<2;i1++)//for each style of tiles
             {

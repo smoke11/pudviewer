@@ -130,7 +130,13 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/knight.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/ogre.png")),
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/archer.png")),
-                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/axethrower.png"))
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/axethrower.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/mage.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/deathknight.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/knight.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/ogre.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/dwarves.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/goblins.png"))
                 };
                 String[] recogniseWith = new String[]{  //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings
                         "Human",
@@ -144,7 +150,13 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "Knight",
                         "Ogre",
                         "Archer",
-                        "Axethrower"
+                        "Axethrower",
+                        "Mage",
+                        "Death Knight",
+                        "Paladin",
+                        "Ogre-Mage",
+                        "Dwarves",
+                        "Goblin Sapper"
                 };
                 String[] ignoreIfHave = new String[]{ //sometimes there is a need to ignore some word in name. i.e. there is orc unit - Ogre and there is building Orc Ogre Mound. so there its needed to ignore word Orc for unit because it will choose building or vice versa
                 //if empty, ignore this
@@ -156,10 +168,16 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "",
                         "",
                         "",
+                        "Death", //Human unit Knight ignore Death Knight
+                        "Orc",   // Orc unit Ogre ignore orc bulding
                         "",
-                        "Orc",
                         "",
-                        ""
+                        "Tower", //human unit mage ignore human building
+                        "",
+                        "",
+                        "Orc",  // Orc unit Ogre ignore orc bulding
+                        "",
+                        "Alchemist" // orc unit goblin sapper ignore orc building
                 };
                 BufferedImage[] unitTiles = SpritesheetParser.cutSpriteSheet(spritesheets, XMLPudSettingsReader.UnitTiles, recogniseWith, ignoreIfHave); //=  SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(resultdir + "sprites/human/humanbuildingssummer.png")), ImageIO.read(new File(resultdir + "sprites/orc/orcbuildingssummer.png")), "Human", XMLPudSettingsReader.unitTilesString);
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));

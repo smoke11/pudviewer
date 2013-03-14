@@ -39,9 +39,8 @@ public class SpritesheetParser {
         }
         return sprites;
     }
-    public static BufferedImage[] cutSpriteSheet(BufferedImage[] spritesheets, Tile[][] tiles, String[] ifThisContainsUseImage, String[] ignoreIfThisContains)
+    public static BufferedImage[] cutSpriteSheet(BufferedImage[] spritesheets, Tile[][] tiles, String[] ifThisContainsUseImage, String[] ifThisContainsIgnore)
     {
-        BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
@@ -55,7 +54,7 @@ public class SpritesheetParser {
                         lastID=tiles[i1][i2].ID;
                         for (int n=0;n<spritesheets.length;n++) //because there can be more words than spritesheets
                         {
-                            if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n])&&(!tiles[i1][i2].Name.contains(ignoreIfThisContains[n])||ignoreIfThisContains[n]==""))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings) Orc in ignore will mean that ignore all with Orc in name
+                            if(tiles[i1][i2].Name.contains(ifThisContainsUseImage[n])&&(!tiles[i1][i2].Name.contains(ifThisContainsIgnore[n])||ifThisContainsIgnore[n]==""))      //using it for telling SpritesheetParser to take specific sprites from specific sheets. i.e. "Human" means take all tiles which hase human in name for this spritesheet (for this it will be all human buildings) Orc in ignore will mean that ignore all with Orc in name
                                 sprites[lastID]= toCompatibleImage(spritesheets[n].getSubimage(tiles[i1][i2].OffsetX, tiles[i1][i2].OffsetY, tiles[i1][i2].SizeX, tiles[i1][i2].SizeY));
 
                         }
