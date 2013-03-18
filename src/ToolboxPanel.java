@@ -12,16 +12,17 @@ import java.util.Iterator;
  * Time: 21:35
  * To change this template use File | Settings | File Templates.
  */
-public class ToolboxPanel extends JPanel implements ActionListener {
+public class ToolboxPanel extends JPanel implements ActionListener, IMapPanelListenerToolbox {
     private ArrayList _mapViewListeners = new ArrayList();
     private ArrayList _mainWindowListeners = new ArrayList();
+    private JTextArea unitInfoTextArea;
     public ToolboxPanel(Dimension d)
     {
         UIManager.put("swing.boldMetal", Boolean.FALSE);
         this.setPreferredSize(d);
         this.setLayout(new FlowLayout());
-
         this.setVisible(true);
+
         JButton showID = new JButton();
         showID.setText("Show ID");
         showID.addActionListener(this);
@@ -34,10 +35,14 @@ public class ToolboxPanel extends JPanel implements ActionListener {
         drawTileBox.setText("Tilebox drawing");
         drawTileBox.addActionListener(this);
 
+        JButton drawUnitsBox = new JButton();
+        drawUnitsBox.setText("Draw Units");
+        drawUnitsBox.addActionListener(this);
+
         super.add(showID);
         super.add(loadMap);
         super.add(drawTileBox);
-
+        super.add(drawUnitsBox);
 
     }
     public synchronized void addEventListener(IToolboxListenerMapPanel listener)  {
@@ -69,9 +74,13 @@ public class ToolboxPanel extends JPanel implements ActionListener {
                     while(i1.hasNext())	{
                         ((IToolboxListenerMapPanel) i1.next()).showID(e);
                     }
-                else
+                else if(whatToFire.equalsIgnoreCase("Tilebox drawing"))
                     while(i1.hasNext())	{
                         ((IToolboxListenerMapPanel) i1.next()).drawTilebox(e);
+                    }
+                else if(whatToFire.equalsIgnoreCase("Draw Units"))
+                    while(i1.hasNext())	{
+                        ((IToolboxListenerMapPanel) i1.next()).drawUnits(e);
                     }
             }
 
@@ -81,5 +90,10 @@ public class ToolboxPanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         JButton b = (JButton)e.getSource();
         fireEvent(b.getText());
+    }
+
+    @Override
+    public void showUnitInfo(MapViewEvents e) {
+        //To change body of implemented methods use File | Settings | File Templates.
     }
 }

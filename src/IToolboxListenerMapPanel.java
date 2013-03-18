@@ -8,5 +8,6 @@
 public interface IToolboxListenerMapPanel {
     public void showID(ToolboxEvents e);
     public void drawTilebox(ToolboxEvents e);
+    public void drawUnits(ToolboxEvents e);
 }
 

@@ -1,12 +1,13 @@
 package smoke11.pudparser.xml;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
+
 import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import smoke11.pudparser.Tile;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 
 
@@ -107,18 +108,10 @@ public class XMLPudSettingsReader {
                     String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     System.out.println("Name: " + name);
                     int size=-1, sizeX=-1, sizeY=-1;
-                    if((name.contains("Human")||name.contains("Orc")||name.contains("Gold Mine")||name.contains("Oil Patch"))&&(!name.contains("Oil Tanker")&&!name.contains("Transport")))   //TODO: make buildings have sizex and sizey so ignore this ifs
-                    {
-                        size =   Integer.parseInt(eElement.getElementsByTagName("Size").item(0).getTextContent());
-                        System.out.println("Size: " + size);
-                    }
-                    else
-                    {
                         sizeX =  Integer.parseInt(eElement.getElementsByTagName("SizeX").item(0).getTextContent());
                         System.out.println("SizeX: " + sizeX);
                         sizeY =  Integer.parseInt(eElement.getElementsByTagName("SizeY").item(0).getTextContent());
                         System.out.println("SizeX: " + sizeY);
-                    }
                     int offx =  Integer.parseInt(eElement.getElementsByTagName("OffsetX").item(0).getTextContent());
                     int offy =  Integer.parseInt(eElement.getElementsByTagName("OffsetY").item(0).getTextContent());
                     System.out.println("OffsetX: " + offx);

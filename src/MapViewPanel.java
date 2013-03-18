@@ -1,10 +1,10 @@
-
 import smoke11.pudparser.Tile;
-import sun.text.CodePointIterator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 /**
@@ -23,40 +23,32 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     private int mouseLastX=0,mouseLastY=0; //used for cameraoffset
     private int actualMouseX=0, actualMouseY=0;
     private boolean drawText = false;
-    private boolean realTimeMoving = true;
-    private boolean movingPanelInsteadCamera = true;  //if true panel will be moved instead drawing again (with diff camera offset) which should be faster but its buggy
-    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor //TODO: add tilebox drawing only on units and buildings
+    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor
+    private boolean drawTileBox = false;  //used for drawing only tilebox and clean tile with last tilebox position
+    private boolean drawTerrain = true;
+    private boolean drawUnits = true;
     private boolean mouseClicked=false;
-    private JPanel panel;   //for moving panel
-    public MapViewPanel(Dimension d, boolean fastermovingcamera)
+    public MapViewPanel(Dimension d)
     {
         this.setPreferredSize(d);
-        panel=this;
-        movingPanelInsteadCamera=fastermovingcamera;
-
         this.setBackground(Color.orange);
         super.addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
                 System.out.println(":"+getClass().getName()+"MOUSE_RELEASED_EVENT:");
-                if(!realTimeMoving)
-                {
-                    cameraOffsetX+=e.getX()-mouseLastX;
-                    cameraOffsetY+=e.getY()-mouseLastY;
-                    System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
-                    if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
-                        makeRepaint();
-                }
                 mouseClicked=false;
             }
             @Override
             public void mousePressed(MouseEvent e) {
                 System.out.println(":"+getClass().getName()+"MOUSE_PRESSED_EVENT:");
-                    mouseLastX=e.getX();
-                    mouseLastY=e.getY();
+                mouseLastX=e.getX();
+                mouseLastY=e.getY();
                 mouseClicked=true;
-                if(!drawTileBoxAlways) //draw tile box if clicking
+                if(!drawTileBoxAlways)
+                {
+                    drawTileBox=true;
                     repaint();
+                }
             }
             @Override
             public void mouseExited(MouseEvent e) {
@@ -72,34 +64,24 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
 
             }
         });
-        //this.setOpaque(false);
+
         super.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
-                if(realTimeMoving)
-                {
+                    //move camera
                     actualMouseX=e.getX();
                     actualMouseY=e.getY();
-                    if(movingPanelInsteadCamera)
-                    {
-                        int x = (int)panel.getLocation().getX();
-                        int y = (int)panel.getLocation().getY();
 
-                        panel.setLocation(x+actualMouseX-mouseLastX,y+actualMouseY-mouseLastY);
-                        System.out.println("Panel position: "+(int)panel.getLocation().getX()+", "+(int)panel.getLocation().getY());
-                    }
-                    else
-                    {
-                        cameraOffsetX+=actualMouseX-mouseLastX;
-                        cameraOffsetY+=actualMouseY-mouseLastY;
-                        System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
-                    }
+                    cameraOffsetX+=actualMouseX-mouseLastX;
+                    cameraOffsetY+=actualMouseY-mouseLastY;
+                    System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
+                    drawTerrain=true;
+
                     mouseLastX=actualMouseX;
                     mouseLastY=actualMouseY;
                     if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
-                        makeRepaint();
-
-                }
+                        drawTileBox=true;
+                    repaint();
             }
 
             @Override
@@ -107,12 +89,14 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 actualMouseX=e.getX();
                 actualMouseY=e.getY();
                 if(drawTileBoxAlways)
-                    makeRepaint();
+                {
+                    drawTileBox=true;
+                    repaint();
+                }
+
             }
         });
 
-        if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
-            makeRepaint();
     }
     private void makeRepaint()
     {
@@ -140,70 +124,88 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             int x=0,y=0;
             Font f = new Font("serif", Font.PLAIN, 10);
             g2d.setFont(f);
-            for (x=0;x<mapTiles.length;x++)
+            if(drawTerrain)
             {
-                for(y=0;y<mapTiles[0].length;y++)
+                for (x=0;x<mapTiles.length;x++)
                 {
-                    if(mapTiles[x][y]!=null)
+                    for(y=0;y<mapTiles[0].length;y++)
                     {
-                        g2d.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                        if(mapTiles[x][y]!=null)
+                        {
+                            g2d.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                        }
+                        else
+                        {
+                            g2d.setColor(Color.BLACK);
+                            g2d.fillRect(cameraOffsetX+x*32, cameraOffsetY+y*32,32,32);
+                            g2d.setColor(Color.CYAN);
+                            g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
+                        }
+
                     }
-                    else
+                }
+                for (x=0;x<mapTiles.length;x++)   //make this as list to draw
+                {
+                    for(y=0;y<mapTiles[0].length;y++)
                     {
-                        g2d.setColor(Color.BLACK);
-                        g2d.fillRect(cameraOffsetX+x*32, cameraOffsetY+y*32,32,32);
-                        g2d.setColor(Color.CYAN);
-                        g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
+                        if(drawUnits)
+                        {
+                            if(unitTiles[x][y]!=null)
+                            {
+                                if(unitSprites[unitTiles[x][y].ID]!=null)
+                                {
+                                if(checkIfBuilding(x,y)) // if building draw normally
+                                    g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
+                                else //if not building calculate real drawing x,y for unit and draw
+                                {
+                                    Point truepos = calculateUnitDrawingPosition(x,y,1,unitSprites[unitTiles[x][y].ID]);
+                                    g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+truepos.x, cameraOffsetY+truepos.y, this);
+                                }
+                                }
+                            }
+                        }
+                        if(drawText)
+                        {
+                            g2d.setColor(Color.CYAN);
+                            g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
+                            if(unitTiles[x][y]!=null)
+                            {
+                                g2d.setColor(Color.RED);
+                                g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
+                            }
+                        }
+
+                    }
+                }
+            }
+            if(drawTileBox)
+            {
+                int tilex = (actualMouseX-cameraOffsetX)/32;
+                int tiley = (actualMouseY-cameraOffsetY)/32;
+                int buildX, buildY;
+                Point p = getUnitPosForMousePos(tilex,tiley);
+                buildX=p.x;
+                buildY=p.y;
+                if((buildX>=0||buildY>=0)&&drawUnits)//check if mouse hovers on some building, if yes, draw tilebox contaning this unit
+                {
+                    g2d.setColor(Color.WHITE);
+                    if(checkIfBuilding(buildX,buildY))
+                        g2d.drawRect(cameraOffsetX+buildX*32,cameraOffsetY+buildY*32,unitTiles[buildX][buildY].SizeX,unitTiles[buildX][buildY].SizeY);
+                    else //if not building calculate real drawing x,y for unit and draw
+                    {
+                        Point truepos = calculateUnitDrawingPosition(buildX,buildY,1,unitSprites[unitTiles[buildX][buildY].ID]);
+                        g2d.drawRect(cameraOffsetX+truepos.x, cameraOffsetY+truepos.y,unitTiles[buildX][buildY].SizeX,unitTiles[buildX][buildY].SizeY);
+                        //g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+truepos.x, cameraOffsetY+truepos.y, this);
                     }
 
                 }
-            }
-            for (x=0;x<mapTiles.length;x++)   //make this as list to draw
-            {
-                for(y=0;y<mapTiles[0].length;y++)
+                else //draw regular tilebox
                 {
-                    if(unitTiles[x][y]!=null)
-                    {
-                        if(unitSprites[unitTiles[x][y].ID]!=null)
-                        {
-                        if(unitTiles[x][y].Name.contains("Human")||unitTiles[x][y].Name.contains("Orc")
-                           ||unitTiles[x][y].Name.contains("Gold Mine")||unitTiles[x][y].Name.contains("Oil Patch")) //all building have race in name. if building draw normally
-                            g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
-                        else //if not building calculate real drawing x,y for unit and draw
-                        {
-                            Point truepos = calculateUnitDrawingPosition(x,y,1,unitSprites[unitTiles[x][y].ID]);
-                            g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+truepos.x, cameraOffsetY+truepos.y, this);
-                        }
-                        }
-                    }
-                    if(drawTileBoxAlways)         //TODO: drawing this as other panel that can be moved, not as repaint all
-                    {
-                        int tilex = (actualMouseX-cameraOffsetX)/32;
-                        int tiley = (actualMouseY-cameraOffsetY)/32;
-                        g2d.setColor(Color.WHITE);
-                        g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
-                    }
-                    else if(mouseClicked)//draw tile box only if mouse was clicked
-                    {
-                        int tilex = (actualMouseX-cameraOffsetX)/32;
-                        int tiley = (actualMouseY-cameraOffsetY)/32;
-                        g2d.setColor(Color.WHITE);
-                        g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
-                    }
-                    if(drawText)
-                    {
-                        g2d.setColor(Color.CYAN);
-                        g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
-                        if(unitTiles[x][y]!=null)
-                        {
-                            g2d.setColor(Color.RED);
-                            g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
-                        }
-                    }
-
+                    g2d.setColor(Color.WHITE);
+                    g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
                 }
+                drawTileBox=false;
             }
-
         }
     }
 
@@ -217,9 +219,48 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
          int newx=tileX*32,newy=tileY*32;
         if(spritesizex>tilesizex)//if sprite taking more space that tile can offer, move starting x
             newx=result.x-(spritesizex-tilesizex)/2;
-         if(spritesizey>tilesizey)//if sprite taking more space that tile can offer, move starting y
-            newy=result.y-(spritesizey-tilesizey);
-         return new Point(newx,newy); //returning point is alredy multiply by 32
+        if(spritesizey>tilesizey)//if sprite taking more space that tile can offer, move starting y
+            newy=result.y-(spritesizey-tilesizey)/2;
+        if(checkIfAirUnit(tileX,tileY))
+            newy-=10; //move air unit higher
+        return new Point(newx,newy); //returning point is already multiply by 32
+    }
+    private boolean checkIfRectContainsPoint(Rectangle rect, int x, int y)
+    {
+        return rect.contains(x,y);
+    }
+    private boolean checkIfBuilding(int tilex, int tiley)   //TODO: move this type of methods to wc2utils package or something like that
+    {
+        if(tilex>=0&&tiley>=-0)
+            return((unitTiles[tilex][tiley].Name.contains("Human")&&!unitTiles[tilex][tiley].Name.contains("Transport")&&!unitTiles[tilex][tiley].Name.contains("Tanker"))
+            ||(unitTiles[tilex][tiley].Name.contains("Orc")&&!unitTiles[tilex][tiley].Name.contains("Transport")&&!unitTiles[tilex][tiley].Name.contains("Tanker"))
+            ||unitTiles[tilex][tiley].Name.contains("Gold Mine")
+            ||unitTiles[tilex][tiley].Name.contains("Oil Patch"));
+        return false;
+    }
+    private boolean checkIfAirUnit(int tilex, int tiley)
+    {
+        if(tilex>=0&&tiley>=-0)
+            return((unitTiles[tilex][tiley].Name.contains("Gnomish Flying Machine")) ||(unitTiles[tilex][tiley].Name.contains("Gryphon Rider"))
+                    || (unitTiles[tilex][tiley].Name.contains("Goblin Zepplin")) ||(unitTiles[tilex][tiley].Name.contains("Dragon")));
+        return false;
+    }
+    private Point getUnitPosForMousePos(int tileX, int tileY) //put tile x,y for mouse position, return -1-1 for no
+    {
+        int x1=(tileX-3)<0?0:(tileX-3);
+        int y1=(tileY-3)<0?0:(tileY-3);
+
+        for(int x=tileX;x>=x1;x--)
+        {
+            for(int y=tileY;y>=y1;y--)
+            {
+                if(unitTiles[x][y]==null)
+                    continue;
+                if(checkIfRectContainsPoint(new Rectangle(x*32,y*32,unitTiles[x][y].SizeX,unitTiles[x][y].SizeY),tileX*32,tileY*32))
+                    return new Point(x,y);
+            }
+        }
+        return new Point(-1,-1);
     }
     @Override
     public void showID(ToolboxEvents e) {
@@ -232,6 +273,12 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     @Override
     public void drawTilebox(ToolboxEvents e) {
        drawTileBoxAlways=!drawTileBoxAlways;
+    }
+
+    @Override
+    public void drawUnits(ToolboxEvents e) {
+        drawUnits=!drawUnits;
+        repaint();
     }
 }
 

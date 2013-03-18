@@ -12,11 +12,13 @@ import smoke11.pudparser.xml.XMLPudSettingsReader;
 import smoke11.pudparser.xml.XML_Tiles_SettingsCreatorIter;
 import smoke11.pudparser.xml.XML_Units_SettingsCreatorIter;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintStream;
 public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
@@ -46,17 +48,14 @@ public class MainWindow implements IToolboxListenerMainWindow {
             //Create and set up the main window.
             JFrame frame = new JFrame("Warcraft 2 Map Viewer");
             Container contentPane = frame.getContentPane();
-            if(movingPanelInsteadCamera)
-                contentPane.setLayout(new FlowLayout());
-            else
-                contentPane.setLayout(new BorderLayout());
+            contentPane.setLayout(new BorderLayout());
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             frame.setPreferredSize(new Dimension(700,500));
             frame.pack();
             frame.setLocation(0,0); //napotrzeby dopasowawywania tilesow
             frame.setVisible(true);
 
-            mapViewPanel = new MapViewPanel(frame.getSize(), movingPanelInsteadCamera);
+            mapViewPanel = new MapViewPanel(frame.getSize());
 
             ToolboxPanel toolbox = new ToolboxPanel(new Dimension(frame.getSize().width,50));
             toolbox.addEventListener(mapViewPanel);
@@ -115,7 +114,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
 
 
             if(XMLPudSettingsReader.main(new String[]{XMLSettingsReader.Dirs[2], XMLSettingsReader.Dirs[1]})!=0)
-                System.out.println("There is something wrong with XMLPudSettingsReader");
+                System.out.println("There is something wrong with XMLPudSettingsReader");      //TODO: making accurate error info
 
             try {
                 BufferedImage[] spritesheets = new BufferedImage[]{

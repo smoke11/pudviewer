@@ -7,11 +7,11 @@ package smoke11.pudparser.xml;
  * Time: 22:48
  * To change this template use File | Settings | File Templates.
  */
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import java.io.File;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -21,6 +21,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import java.io.File;
 public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet is in diffrent size and order, so yeah, writing it all down :|
     public static int main(String argv[]) {
 
@@ -100,7 +101,10 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
                     name.appendChild(doc.createTextNode(prefix[i1]+" "+names[i1][i2]));
                     tile.appendChild(name);
                     //size
-                    size = doc.createElement("Size");
+                    size = doc.createElement("SizeX");
+                    size.appendChild(doc.createTextNode(String.valueOf(sizes[i1][i2])));
+                    tile.appendChild(size);
+                    size = doc.createElement("SizeY");
                     size.appendChild(doc.createTextNode(String.valueOf(sizes[i1][i2])));
                     tile.appendChild(size);
                     //offsetx
