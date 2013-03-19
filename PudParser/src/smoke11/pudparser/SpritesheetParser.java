@@ -14,7 +14,6 @@ import java.awt.image.BufferedImage;
 public class SpritesheetParser {
     public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet,  Tile[][][] tiles)
     {
-        BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length*tiles[0][0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
@@ -85,7 +84,6 @@ public class SpritesheetParser {
     }
     public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet1, BufferedImage spritesheet2, String ifThisContainsUseFirstImage, Tile[][] tiles)
     {
-        BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
@@ -119,7 +117,6 @@ public class SpritesheetParser {
     }
     public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet,  Tile[][] tiles)
     {
-        BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length*tiles[0].length];
         int lastID=-1;
         for (int i1=0;i1<tiles.length;i1++)
@@ -150,7 +147,6 @@ public class SpritesheetParser {
     }
     public static BufferedImage[] cutSpriteSheet(BufferedImage spritesheet, Tile[] tiles)
     {
-        BufferedImage crop;
         BufferedImage[] sprites = new BufferedImage[tiles.length];
         int i = 0;
          for (Tile tile : tiles)

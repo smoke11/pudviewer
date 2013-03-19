@@ -57,7 +57,8 @@ public class XMLPudSettingsReader {
                     Element eElement = (Element) nNode;
                     String pudid = eElement.getAttribute("PudID");
                     System.out.println(pudid);
-                    String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
+                    String name;
+                    name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     System.out.println("Name: " + name);
                     int size =  Integer.parseInt(eElement.getElementsByTagName("Size").item(0).getTextContent());
                     System.out.println("Size: " + size);
@@ -107,7 +108,7 @@ public class XMLPudSettingsReader {
                     System.out.println(pudid);
                     String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     System.out.println("Name: " + name);
-                    int size=-1, sizeX=-1, sizeY=-1;
+                    int size=-1, sizeX, sizeY;
                         sizeX =  Integer.parseInt(eElement.getElementsByTagName("SizeX").item(0).getTextContent());
                         System.out.println("SizeX: " + sizeX);
                         sizeY =  Integer.parseInt(eElement.getElementsByTagName("SizeY").item(0).getTextContent());

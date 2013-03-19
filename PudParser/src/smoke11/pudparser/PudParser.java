@@ -22,7 +22,7 @@ public class PudParser {
     public Tile[][] unitTiles;
     public void getMapDataFromFile(File file)
     {
-        FileInputStream fin = null;
+        FileInputStream fin;
         if(dimX ==0|| dimY ==0)
             getInfoFromFile(file);
         try {
@@ -194,9 +194,8 @@ The pud format consist of many sections, all sections start the same way:
     }
     public void prepareTiles(Tile[][][] terrainTilesInfo, Tile[][] unitTilesInfo)
     {
-        String s1="", s2="";
-        int x=0,y=0;
-        Integer i=0;
+        String s1, s2;
+        int x,y;
         mapTiles = new Tile[mapDataTiles.length][mapDataTiles[0].length];
         unitTiles = new Tile[mapDataTiles.length][mapDataTiles[0].length];
         //terrain
@@ -204,7 +203,7 @@ The pud format consist of many sections, all sections start the same way:
         {
             for(y=0;y< mapDataTiles[0].length;y++)
             {
-                i=0;
+
                 s1=String.format("%02X", mapDataTiles[x][y][1]);
                 s2=String.format("%02X", mapDataTiles[x][y][0]);
                 int i2,i3,i4;
@@ -258,7 +257,7 @@ The pud format consist of many sections, all sections start the same way:
     }
     public void readBytes(int numOfBytesX, int numOfBytesY, byte[][] destinationArray, DataInputStream din)
     {
-        int read=numOfBytesX*numOfBytesY, x=0;
+        int read=numOfBytesX*numOfBytesY, x;
         try {
             for (x=0;x<numOfBytesX;x++)
                 din.read(destinationArray[x],0,numOfBytesY);
@@ -270,7 +269,7 @@ The pud format consist of many sections, all sections start the same way:
     }
     public void readBytes(int numOfBytesX, int numOfBytesY, int numOfBytesZ, byte[][][] destinationArray, DataInputStream din)
     {
-        int read=numOfBytesX*numOfBytesY*numOfBytesZ, x=0,y=0;
+        int read=numOfBytesX*numOfBytesY*numOfBytesZ, x,y;
         try {
             for (x=0;x<numOfBytesX;x++)
                 for (y=0;y<numOfBytesY;y++)

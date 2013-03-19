@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class ToolboxPanel extends JPanel implements ActionListener, IMapPanelListenerToolbox {
     private ArrayList _mapViewListeners = new ArrayList();
     private ArrayList _mainWindowListeners = new ArrayList();
-    private JTextArea unitInfoTextArea;
+
     public ToolboxPanel(Dimension d)
     {
         UIManager.put("swing.boldMetal", Boolean.FALSE);

@@ -6,8 +6,11 @@ package smoke11.pudparser.xml;
  * Time: 18:48
  * To change this template use File | Settings | File Templates.
  */
-import java.io.File;
-import java.util.ArrayList;
+
+import org.w3c.dom.Attr;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -16,20 +19,30 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import org.w3c.dom.*;
+import java.io.File;
+import java.util.ArrayList;
 
 public class XML_Tiles_SettingsCreatorIter {
     public static int main(String argv[]) {
 
         try {
-
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-
             Document doc = docBuilder.newDocument();
             Element rootElement = doc.createElement("TerrainTiles");
+
+            Element tile;
+            Attr attr;
+            Element name, size, offsetx, offsety;
+            String[][][] PudIDs = new String[3][][];  //for each typeoftiles(summer,winter,wasteland) for each tile, for each version
+            String[] names;
+            String sizeOfTile = "32";
+            String[][][] OffsetsX  = new String[3][][];  //summer,winter,wasteland
+            String[][][] OffsetsY = new String[3][][];  //summer,winter,wasteland
+
+            PudIDs[0] = new String[][]{
+              new String[]{"0010","0011","0012","0013"}
+            };
             doc.appendChild(rootElement);
             doc.createComment("================\r\n");
             doc.createComment("SOLID TILES CREATED manually   http://cade.datamax.bg/war2x/pudspec.html - Appendix D: General map tiles\r\n");
@@ -37,26 +50,26 @@ public class XML_Tiles_SettingsCreatorIter {
 
             //<editor-fold desc="Description">
             //LightWater0
-            Element tile = doc.createElement("Tile");
+            tile = doc.createElement("Tile");
             rootElement.appendChild(tile);
             //id
-            Attr attr = doc.createAttribute("PudID");
+            attr = doc.createAttribute("PudID");
             attr.setValue("0010");
             tile.setAttributeNode(attr);
             //name
-            Element name = doc.createElement("Name");
+            name = doc.createElement("Name");
             name.appendChild(doc.createTextNode("solid light water0"));
             tile.appendChild(name);
             //size
-            Element size = doc.createElement("Size");
+            size = doc.createElement("Size");
             size.appendChild(doc.createTextNode("32"));
             tile.appendChild(size);
             //offsetx
-            Element offsetx = doc.createElement("OffsetX");
+            offsetx = doc.createElement("OffsetX");
             offsetx.appendChild(doc.createTextNode("165"));
             tile.appendChild(offsetx);
             //offsety
-            Element offsety = doc.createElement("OffsetY");
+            offsety = doc.createElement("OffsetY");
             offsety.appendChild(doc.createTextNode("561"));
             tile.appendChild(offsety);
 

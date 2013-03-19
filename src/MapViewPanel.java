@@ -121,7 +121,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
 
             Graphics2D g2d = (Graphics2D) g;
 
-            int x=0,y=0;
+            int x, y;
             Font f = new Font("serif", Font.PLAIN, 10);
             g2d.setFont(f);
             if(drawTerrain)
@@ -129,20 +129,14 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 for (x=0;x<mapTiles.length;x++)
                 {
                     for(y=0;y<mapTiles[0].length;y++)
-                    {
-                        if(mapTiles[x][y]!=null)
-                        {
-                            g2d.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX+x*32, cameraOffsetY+y*32, this);
-                        }
-                        else
-                        {
+                        if (mapTiles[x][y] != null) {
+                            g2d.drawImage(terrainSprites[mapTiles[x][y].ID], cameraOffsetX + x * 32, cameraOffsetY + y * 32, this);
+                        } else {
                             g2d.setColor(Color.BLACK);
-                            g2d.fillRect(cameraOffsetX+x*32, cameraOffsetY+y*32,32,32);
+                            g2d.fillRect(cameraOffsetX + x * 32, cameraOffsetY + y * 32, 32, 32);
                             g2d.setColor(Color.CYAN);
-                            g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+10+y*32);
+                            g2d.drawString(mapTiles[x][y].PudID, cameraOffsetX + 4 + x * 32, cameraOffsetY + 10 + y * 32);
                         }
-
-                    }
                 }
                 for (x=0;x<mapTiles.length;x++)   //make this as list to draw
                 {
@@ -231,19 +225,11 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     }
     private boolean checkIfBuilding(int tilex, int tiley)   //TODO: move this type of methods to wc2utils package or something like that
     {
-        if(tilex>=0&&tiley>=-0)
-            return((unitTiles[tilex][tiley].Name.contains("Human")&&!unitTiles[tilex][tiley].Name.contains("Transport")&&!unitTiles[tilex][tiley].Name.contains("Tanker"))
-            ||(unitTiles[tilex][tiley].Name.contains("Orc")&&!unitTiles[tilex][tiley].Name.contains("Transport")&&!unitTiles[tilex][tiley].Name.contains("Tanker"))
-            ||unitTiles[tilex][tiley].Name.contains("Gold Mine")
-            ||unitTiles[tilex][tiley].Name.contains("Oil Patch"));
-        return false;
+        return tilex >= 0 && tiley >= -0 && ((unitTiles[tilex][tiley].Name.contains("Human") && !unitTiles[tilex][tiley].Name.contains("Transport") && !unitTiles[tilex][tiley].Name.contains("Tanker")) || (unitTiles[tilex][tiley].Name.contains("Orc") && !unitTiles[tilex][tiley].Name.contains("Transport") && !unitTiles[tilex][tiley].Name.contains("Tanker")) || unitTiles[tilex][tiley].Name.contains("Gold Mine") || unitTiles[tilex][tiley].Name.contains("Oil Patch"));
     }
     private boolean checkIfAirUnit(int tilex, int tiley)
     {
-        if(tilex>=0&&tiley>=-0)
-            return((unitTiles[tilex][tiley].Name.contains("Gnomish Flying Machine")) ||(unitTiles[tilex][tiley].Name.contains("Gryphon Rider"))
-                    || (unitTiles[tilex][tiley].Name.contains("Goblin Zepplin")) ||(unitTiles[tilex][tiley].Name.contains("Dragon")));
-        return false;
+        return tilex >= 0 && tiley >= -0 && ((unitTiles[tilex][tiley].Name.contains("Gnomish Flying Machine")) || (unitTiles[tilex][tiley].Name.contains("Gryphon Rider")) || (unitTiles[tilex][tiley].Name.contains("Goblin Zepplin")) || (unitTiles[tilex][tiley].Name.contains("Dragon")));
     }
     private Point getUnitPosForMousePos(int tileX, int tileY) //put tile x,y for mouse position, return -1-1 for no
     {

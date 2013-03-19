@@ -81,7 +81,7 @@ class ExtensionFileFilter extends FileFilter {
         } else {
             this.description = description;
         }
-        this.extensions = (String[]) extensions.clone();
+        this.extensions = extensions.clone();
         toLower(this.extensions);
     }
 
