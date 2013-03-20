@@ -162,6 +162,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                         {
                             g2d.setColor(Color.CYAN);
                             g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
+                            if(mapTiles[x][y].PudID.length()==3)
+                                System.out.println("Problem with: "+mapTiles[x][y].Name+" ID: "+mapTiles[x][y].ID+" PudID: "+mapTiles[x][y].PudID);
                             if(unitTiles[x][y]!=null)
                             {
                                 g2d.setColor(Color.RED);

@@ -105,7 +105,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
             {
                 int result = XML_Units_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[1]});
             }
-            if(!terraintiles.exists())
+            if(true)//!terraintiles.exists())
             {
                 int result = XML_Tiles_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[2]});
             }

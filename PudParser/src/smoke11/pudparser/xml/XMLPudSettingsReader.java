@@ -57,6 +57,8 @@ public class XMLPudSettingsReader {
                     Element eElement = (Element) nNode;
                     String pudid = eElement.getAttribute("PudID");
                     System.out.println(pudid);
+                    if(pudid.length()<3)    //TODO: make debug module
+                        System.out.println("Problem with XMLPudSettingsReader: PUDid too short");
                     String name;
                     name = eElement.getElementsByTagName("Name").item(0).getTextContent();
                     System.out.println("Name: " + name);
@@ -73,8 +75,14 @@ public class XMLPudSettingsReader {
                     {
                         for (int i=0;i<16;i++)        //becuase, no matter how many there is versions of tile, there can be 16 diff versions by id, so its needed to make it, even if it use 1 sprite for all 16 versions
                         {
-                            String newpudid=pudid.substring(0,2);
-                            newpudid+=i;
+                            String newpudid=pudid.substring(0,3);
+                            String tempstr = newpudid;
+                            if(i<10)
+                                newpudid+=String.valueOf(i);
+                            else
+                                newpudid+=String.valueOf((char)('a'+(i-10)));
+                            if(newpudid.length()<4)  //TODO: make debug module
+                                System.out.println("Problem with XMLPudSettingsReader: var newpudid too short");
                             tile = new Tile(temp,newpudid,name,size,offx,offy);
                             SortedTerrainTiles[parsedpudid[1]][parsedpudid[2]][i]=tile;
                         }
@@ -96,7 +104,7 @@ public class XMLPudSettingsReader {
             System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
             nList = doc.getElementsByTagName("Unit");
 
-
+             //TODO: repair showing PUDID
             System.out.println("----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
