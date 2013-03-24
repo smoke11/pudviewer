@@ -6,6 +6,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
+import smoke11.DebugView;
 import smoke11.pudparser.PudParser;
 import smoke11.pudparser.SpritesheetParser;
 import smoke11.pudparser.xml.XMLPudSettingsReader;
@@ -18,30 +19,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintStream;
+
 public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-    private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//; //use this to change path to files of this program
+        private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//; //use this to change path to files of this program
         private void createAndShowGUI() {
-            if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
+            if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
-            //Create and set up the debug window.
-            JTextArea ta = new JTextArea();
-            ta.setSize(100,400);
-            TextAreaOutputStream taos = new TextAreaOutputStream( ta, Integer.MAX_VALUE );
-            PrintStream ps = new PrintStream( taos );
-            System.setOut( ps );
-            System.setErr( ps );
-            JFrame frame2 = new JFrame ("Debug Console");
-            frame2.setDefaultCloseOperation (JFrame.EXIT_ON_CLOSE);
-            JScrollPane jpane = new JScrollPane( ta );
-            jpane.setSize(100,400);
-            frame2.getContentPane().add ( jpane );
-            frame2.setVisible (true);
-            frame2.setSize(new Dimension(200, 400));
-            frame2.setLocation(830,0);
+                //Create and set up the debug window.
+                DebugView.createWindow(830, 0, 200, 400,DebugView.DEBUGLVL_LESSINFO);
             }
 
             //Create and set up the main window.
@@ -105,14 +93,12 @@ public class MainWindow implements IToolboxListenerMainWindow {
             {
                 int result = XML_Units_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[1]});
             }
-            if(true)//!terraintiles.exists())
+            if(true)//!terraintiles.exists()) TODO: For now making with each run new xml, for test. after this, removeit
             {
                 int result = XML_Tiles_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[2]});
             }
+            XMLPudSettingsReader.main(new String[]{XMLSettingsReader.Dirs[2], XMLSettingsReader.Dirs[1]});
 
-
-            if(XMLPudSettingsReader.main(new String[]{XMLSettingsReader.Dirs[2], XMLSettingsReader.Dirs[1]})!=0)
-                System.out.println("There is something wrong with XMLPudSettingsReader");      //TODO: making accurate error info
 
             try {
                 BufferedImage[] spritesheets = new BufferedImage[]{
@@ -240,7 +226,6 @@ public class MainWindow implements IToolboxListenerMainWindow {
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
             }
             catch (IOException e) {
-                System.out.println("Can`t read summertiles.png");
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }

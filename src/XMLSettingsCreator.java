@@ -1,6 +1,7 @@
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import smoke11.DebugView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,7 +11,7 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.File;                               //TODO: make debug levels. i.e. for 1 only errors, for 2, more informations, for 3 wall of text
+import java.io.File;
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,7 +76,7 @@ public class XMLSettingsCreator {
 
             transformer.transform(source, result);
 
-            System.out.println("File saved!");
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLSettingsCreator.class.getSimpleName(), "File saved!");
 
         } catch (ParserConfigurationException pce) {
             pce.printStackTrace();

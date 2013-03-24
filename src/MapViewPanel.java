@@ -1,3 +1,4 @@
+import smoke11.DebugView;
 import smoke11.pudparser.Tile;
 
 import javax.swing.*;
@@ -27,7 +28,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     private boolean drawTileBox = false;  //used for drawing only tilebox and clean tile with last tilebox position
     private boolean drawTerrain = true;
     private boolean drawUnits = true;
-    private boolean mouseClicked=false;
+    private boolean drawUnitInfo = true;
+    private boolean leftMouseClicked =false ,rightMouseClicked=false;
     public MapViewPanel(Dimension d)
     {
         this.setPreferredSize(d);
@@ -35,15 +37,38 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
         super.addMouseListener(new MouseListener() {
             @Override
             public void mouseReleased(MouseEvent e) {
-                System.out.println(":"+getClass().getName()+"MOUSE_RELEASED_EVENT:");
-                mouseClicked=false;
+                //System.out.println(":"+getClass().getName()+"MOUSE_RELEASED_EVENT:");
+                if(!e.isMetaDown())
+                    rightMouseClicked =false;
+                else
+                    leftMouseClicked=false;
             }
             @Override
             public void mousePressed(MouseEvent e) {
-                System.out.println(":"+getClass().getName()+"MOUSE_PRESSED_EVENT:");
+                //System.out.println(":"+getClass().getName()+"MOUSE_PRESSED_EVENT:");
                 mouseLastX=e.getX();
                 mouseLastY=e.getY();
-                mouseClicked=true;
+/*
+                if(e.isAltDown())
+                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltDown");
+                if(e.isMetaDown())
+                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isMetaDown");
+                if(e.isShiftDown())
+                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isShiftDown");
+                if(e.isControlDown())
+                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isControlDown");
+                if(e.isAltGraphDown())
+                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltGraphdown");
+*/
+
+                if(e.isMetaDown())
+                {
+                    rightMouseClicked=true;
+                    if(drawUnitInfo)
+                        repaint();
+                }
+                else
+                    leftMouseClicked =true;
                 if(!drawTileBoxAlways)
                 {
                     drawTileBox=true;
@@ -60,7 +85,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             }
             @Override
             public void mouseClicked(MouseEvent e) {
-                System.out.println(":"+getClass().getName()+"MOUSE_CLICK_EVENT:");
+                //System.out.println(":"+getClass().getName()+"MOUSE_CLICK_EVENT:");
 
             }
         });
@@ -74,7 +99,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
 
                     cameraOffsetX+=actualMouseX-mouseLastX;
                     cameraOffsetY+=actualMouseY-mouseLastY;
-                    System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
+                    //System.out.println("Camera Offset: "+cameraOffsetX+", "+cameraOffsetY);
                     drawTerrain=true;
 
                     mouseLastX=actualMouseX;
@@ -162,8 +187,6 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                         {
                             g2d.setColor(Color.CYAN);
                             g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
-                            if(mapTiles[x][y].PudID.length()==3)
-                                System.out.println("Problem with: "+mapTiles[x][y].Name+" ID: "+mapTiles[x][y].ID+" PudID: "+mapTiles[x][y].PudID);
                             if(unitTiles[x][y]!=null)
                             {
                                 g2d.setColor(Color.RED);
@@ -176,21 +199,21 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             }
             if(drawTileBox)
             {
-                int tilex = (actualMouseX-cameraOffsetX)/32;
+                int tilex = (actualMouseX-cameraOffsetX)/32;  //TODO: calculate this on begin of method
                 int tiley = (actualMouseY-cameraOffsetY)/32;
-                int buildX, buildY;
+                int unitX, unitY;
                 Point p = getUnitPosForMousePos(tilex,tiley);
-                buildX=p.x;
-                buildY=p.y;
-                if((buildX>=0||buildY>=0)&&drawUnits)//check if mouse hovers on some building, if yes, draw tilebox contaning this unit
+                if(p!=null&&drawUnits)//check if mouse hovers on some building, if yes, draw tilebox contaning this unit
                 {
+                    unitX=p.x;
+                    unitY=p.y;
                     g2d.setColor(Color.WHITE);
-                    if(checkIfBuilding(buildX,buildY))
-                        g2d.drawRect(cameraOffsetX+buildX*32,cameraOffsetY+buildY*32,unitTiles[buildX][buildY].SizeX,unitTiles[buildX][buildY].SizeY);
+                    if(checkIfBuilding(unitX,unitY))
+                        g2d.drawRect(cameraOffsetX+unitX*32,cameraOffsetY+unitY*32,unitTiles[unitX][unitY].SizeX,unitTiles[unitX][unitY].SizeY);
                     else //if not building calculate real drawing x,y for unit and draw
                     {
-                        Point truepos = calculateUnitDrawingPosition(buildX,buildY,1,unitSprites[unitTiles[buildX][buildY].ID]);
-                        g2d.drawRect(cameraOffsetX+truepos.x, cameraOffsetY+truepos.y,unitTiles[buildX][buildY].SizeX,unitTiles[buildX][buildY].SizeY);
+                        Point truepos = calculateUnitDrawingPosition(unitX,unitY,1,unitSprites[unitTiles[unitX][unitY].ID]);
+                        g2d.drawRect(cameraOffsetX+truepos.x, cameraOffsetY+truepos.y,unitTiles[unitX][unitY].SizeX,unitTiles[unitX][unitY].SizeY);
                         //g2d.drawImage(unitSprites[unitTiles[x][y].ID], cameraOffsetX+truepos.x, cameraOffsetY+truepos.y, this);
                     }
 
@@ -202,6 +225,37 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 }
                 drawTileBox=false;
             }
+            if(drawUnitInfo&&rightMouseClicked)
+            {
+                int tilex = (actualMouseX-cameraOffsetX)/32;  //TODO: calculate this on begin of method
+                int tiley = (actualMouseY-cameraOffsetY)/32;
+                int unitX, unitY, actualX,actualY;
+                Point p = getUnitPosForMousePos(tilex,tiley);
+                if(p!=null)
+                {
+                    unitX=p.x;
+                    unitY=p.y;
+                    f = new Font("serif", Font.PLAIN, 10);
+                    g2d.setFont(f);
+                    actualX= actualMouseX;
+                    actualY=actualMouseY;
+                    int starty=actualY;
+                    g2d.setColor(Color.GREEN);
+                    actualX+=10;
+                    actualY+=15;
+                    g2d.drawString("Name: "+unitTiles[unitX][unitY].Name,actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("ID: "+unitTiles[unitX][unitY].ID,actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("PUDID: "+unitTiles[unitX][unitY].PudID,actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("OffsetX: "+unitTiles[unitX][unitY].OffsetX,actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("OffsetY: "+unitTiles[unitX][unitY].OffsetY,actualX,actualY);
+                    g2d.drawRect(actualMouseX,actualMouseY,150,actualY-starty+15);
+                }
+            }
+
         }
     }
 
@@ -233,7 +287,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     {
         return tilex >= 0 && tiley >= -0 && ((unitTiles[tilex][tiley].Name.contains("Gnomish Flying Machine")) || (unitTiles[tilex][tiley].Name.contains("Gryphon Rider")) || (unitTiles[tilex][tiley].Name.contains("Goblin Zepplin")) || (unitTiles[tilex][tiley].Name.contains("Dragon")));
     }
-    private Point getUnitPosForMousePos(int tileX, int tileY) //put tile x,y for mouse position, return -1-1 for no
+    private Point getUnitPosForMousePos(int tileX, int tileY) //put tile x,y for mouse position, return null for no
     {
         int x1=(tileX-3)<0?0:(tileX-3);
         int y1=(tileY-3)<0?0:(tileY-3);
@@ -248,12 +302,12 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     return new Point(x,y);
             }
         }
-        return new Point(-1,-1);
+        return null;
     }
     @Override
     public void showID(ToolboxEvents e) {
         drawText =!drawText;
-        System.out.println("Drawing id info: "+drawText);
+        DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getSimpleName(), "Drawing id info: " + drawText);
         if(!drawTileBoxAlways)   //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
             makeRepaint();
     }

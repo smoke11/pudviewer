@@ -1,5 +1,4 @@
-
-
+import smoke11.DebugView;
 import smoke11.pudparser.PudParser;
 
 import javax.swing.*;
@@ -25,7 +24,7 @@ public class FileOpenPanel extends JPanel
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             OpenedXMLFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + OpenedXMLFile.getAbsolutePath());
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getSimpleName(), "Selected file: " + OpenedXMLFile.getAbsolutePath());
         }
     }
     public void openXMLFile() {
@@ -46,7 +45,7 @@ public class FileOpenPanel extends JPanel
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             OpenedXMLFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + OpenedXMLFile.getAbsolutePath());
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getSimpleName(), "Selected file: " + OpenedXMLFile.getAbsolutePath());
         }
     }
     public void openMapFile(String dir) {
@@ -61,7 +60,7 @@ public class FileOpenPanel extends JPanel
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
             OpenedMapFile = fileChooser.getSelectedFile();
-            System.out.println("Selected file: " + OpenedMapFile.getAbsolutePath());
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getSimpleName(), "Selected file: " + OpenedMapFile.getAbsolutePath());
         }
     }
 

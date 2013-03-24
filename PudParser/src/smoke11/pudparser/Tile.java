@@ -14,6 +14,7 @@ public class Tile {
     public int SizeY;
     public int OffsetX; //how get to this tile from spritesheet from left top point
     public int OffsetY; //how get to this tile from spritesheet from left top point
+    //TODO: add information about which spritesheet is used
     public Tile(int id, String pudid, String name, int size, int offx, int offy)
     {
         ID=id;

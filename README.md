@@ -11,6 +11,8 @@ Orcs spritesheets to orcs subfolder, Human spritesheets to human subfolder. (i.e
 
 Maps can be found in several places, i.e. http://www.angelfire.com/mi/TheRingOfShadows/war2puds.html
 
+Using https://github.com/smoke11/debugpanel for debug purposes - replacing system.out.println
+
 Run MainClass in pudviewer to run program.
 
 All rights belong to their respective owners.

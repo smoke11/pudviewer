@@ -11,6 +11,7 @@ package smoke11.pudparser.xml;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import smoke11.DebugView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -201,7 +202,7 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
 
                 transformer.transform(source, result);
 
-                System.out.println("File saved!");
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XML_Units_SettingsCreatorIter.class.getSimpleName(), "File saved!");
             return 0;
 
         }

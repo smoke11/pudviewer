@@ -2,6 +2,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import smoke11.DebugView;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -21,8 +22,9 @@ public class XMLSettingsReader {
 
         try {
             File fXmlFile;
-
-            fXmlFile = new File(args[0]); //settings.xml
+            String s =args[0];
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLSettingsReader.class.getSimpleName(), "Reading File: "+ s);
+            fXmlFile = new File(s); //settings.xml
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -31,24 +33,24 @@ public class XMLSettingsReader {
             //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Root element :" + doc.getDocumentElement().getNodeName());
 
             NodeList nList = doc.getElementsByTagName("File");
             Names = new String[nList.getLength()];
             Dirs=new String[nList.getLength()];
-            System.out.println("----------------------------");
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
 
-                System.out.println("\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "\nCurrent Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     String name = eElement.getAttribute("Name");
-                    System.out.println(name);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(),"Name: "+name);
                     Names[temp]=name;
                     String dir = eElement.getAttribute("Dir");
-                    System.out.println("Dir: " +dir);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Dir: " +dir);
                     Dirs[temp]=dir;
 
                 }

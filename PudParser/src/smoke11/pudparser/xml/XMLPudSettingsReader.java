@@ -4,6 +4,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import smoke11.DebugView;
 import smoke11.pudparser.Tile;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -26,10 +27,8 @@ public class XMLPudSettingsReader {
         try {
             File fXmlFile;
 
-           // System.out.println(fulldir);
-           // System.out.println(dironly);
             String s = args[0];
-            System.out.println(s);
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLPudSettingsReader.class.getSimpleName(), "Reading file: "+s);
             fXmlFile = new File(args[0]); //terrain_tiles
 
             //<editor-fold desc="Description">
@@ -41,33 +40,33 @@ public class XMLPudSettingsReader {
             //read this - http://stackoverflow.com/questions/13786607/normalization-in-dom-parsing-with-java-how-does-it-work
             doc.getDocumentElement().normalize();
 
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Root element :" + doc.getDocumentElement().getNodeName());
 
             NodeList nList = doc.getElementsByTagName("Tile");
 
 
-            System.out.println("----------------------------");
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
 
                 Node nNode = nList.item(temp);
 
-                System.out.println("\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"\nCurrent Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     String pudid = eElement.getAttribute("PudID");
-                    System.out.println(pudid);
-                    if(pudid.length()<3)    //TODO: make debug module
-                        System.out.println("Problem with XMLPudSettingsReader: PUDid too short");
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),pudid);
+                    if(pudid.length()<3)
+                        DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Problem with XMLPudSettingsReader: PUDid too short");
                     String name;
                     name = eElement.getElementsByTagName("Name").item(0).getTextContent();
-                    System.out.println("Name: " + name);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Name: " + name);
                     int size =  Integer.parseInt(eElement.getElementsByTagName("Size").item(0).getTextContent());
-                    System.out.println("Size: " + size);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Size: " + size);
                     int offx =  Integer.parseInt(eElement.getElementsByTagName("OffsetX").item(0).getTextContent());
                     int offy =  Integer.parseInt(eElement.getElementsByTagName("OffsetY").item(0).getTextContent());
-                    System.out.println("OffsetX: " + offx);
-                    System.out.println("OffsetY: " + offy);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"OffsetX: " + offx);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"OffsetY: " + offy);
                     Tile tile = new Tile(temp,pudid,name,size,offx,offy);
                     int[] parsedpudid = parsePudid(pudid);
                     SortedTerrainTiles[parsedpudid[1]][parsedpudid[2]][parsedpudid[3]]=tile;
@@ -75,14 +74,11 @@ public class XMLPudSettingsReader {
                     {
                         for (int i=0;i<16;i++)        //becuase, no matter how many there is versions of tile, there can be 16 diff versions by id, so its needed to make it, even if it use 1 sprite for all 16 versions
                         {
-                            String newpudid=pudid.substring(0,3);
-                            String tempstr = newpudid;
+                            String newpudid=pudid.substring(0, 3);
                             if(i<10)
                                 newpudid+=String.valueOf(i);
                             else
                                 newpudid+=String.valueOf((char)('a'+(i-10)));
-                            if(newpudid.length()<4)  //TODO: make debug module
-                                System.out.println("Problem with XMLPudSettingsReader: var newpudid too short");
                             tile = new Tile(temp,newpudid,name,size,offx,offy);
                             SortedTerrainTiles[parsedpudid[1]][parsedpudid[2]][i]=tile;
                         }
@@ -92,7 +88,7 @@ public class XMLPudSettingsReader {
             }
             //</editor-fold>
             s = args[1];
-            System.out.println(s);
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLPudSettingsReader.class.getSimpleName(),s);
             fXmlFile = new File(args[1]); //unit_tiles
 
             dbFactory = DocumentBuilderFactory.newInstance();
@@ -101,30 +97,29 @@ public class XMLPudSettingsReader {
             UnitTiles = new Tile[7][16]; //from 0 to 6 and from 0 to f
 
             doc.getDocumentElement().normalize();
-            System.out.println("Root element :" + doc.getDocumentElement().getNodeName());
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Root element :" + doc.getDocumentElement().getNodeName());
             nList = doc.getElementsByTagName("Unit");
 
-             //TODO: repair showing PUDID
-            System.out.println("----------------------------");
+            DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(), "----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                System.out.println("\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"\nCurrent Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     String pudid = eElement.getAttribute("PudID");
-                    System.out.println(pudid);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),pudid);
                     String name = eElement.getElementsByTagName("Name").item(0).getTextContent();
-                    System.out.println("Name: " + name);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Name: " + name);
                     int size=-1, sizeX, sizeY;
-                        sizeX =  Integer.parseInt(eElement.getElementsByTagName("SizeX").item(0).getTextContent());
-                        System.out.println("SizeX: " + sizeX);
-                        sizeY =  Integer.parseInt(eElement.getElementsByTagName("SizeY").item(0).getTextContent());
-                        System.out.println("SizeX: " + sizeY);
+                    sizeX =  Integer.parseInt(eElement.getElementsByTagName("SizeX").item(0).getTextContent());
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"SizeX: " + sizeX);
+                    sizeY =  Integer.parseInt(eElement.getElementsByTagName("SizeY").item(0).getTextContent());
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"SizeX: " + sizeY);
                     int offx =  Integer.parseInt(eElement.getElementsByTagName("OffsetX").item(0).getTextContent());
                     int offy =  Integer.parseInt(eElement.getElementsByTagName("OffsetY").item(0).getTextContent());
-                    System.out.println("OffsetX: " + offx);
-                    System.out.println("OffsetY: " + offy);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"OffsetX: " + offx);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"OffsetY: " + offy);
                     Tile tile;
                     if(size==-1)
                         tile = new Tile(temp,pudid,name,sizeX,sizeY,offx,offy);
