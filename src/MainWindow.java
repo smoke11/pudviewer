@@ -6,12 +6,13 @@
  * To change this template use File | Settings | File Templates.
  */
 
-import smoke11.DebugView;
+
 import smoke11.pudparser.PudParser;
 import smoke11.pudparser.SpritesheetParser;
 import smoke11.pudparser.xml.XMLPudSettingsReader;
 import smoke11.pudparser.xml.XML_Tiles_SettingsCreatorIter;
 import smoke11.pudparser.xml.XML_Units_SettingsCreatorIter;
+import smoke11.DebugView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-        private String mainDir="C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//; //use this to change path to files of this program
+        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
@@ -63,6 +64,12 @@ public class MainWindow implements IToolboxListenerMainWindow {
             javax.swing.SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
                     createAndShowGUI();
+                    if(mainDir=="")
+                    {
+                        FileOpenPanel f = new FileOpenPanel();
+                        mainDir = f.getPathToJar();
+
+                    }
                     File XMLfile = new File(mainDir+"settings.xml");
                     if(true)//!XMLfile.exists()) //TODO: when not needed debug, make checking if file exists
                     {
@@ -101,7 +108,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
 
 
             try {
-                BufferedImage[] spritesheets = new BufferedImage[]{
+                BufferedImage[] spritesheets = new BufferedImage[]{             //TODO: repair bug with not reading this, when taking path to data files from filechooser
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/humanbuildingssummer.png")), //buildings
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/orcbuildingssummer.png")),     //buildings
                         //units
@@ -226,6 +233,9 @@ public class MainWindow implements IToolboxListenerMainWindow {
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
             }
             catch (IOException e) {
+                DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS,this.getClass().getName(), "Dirs: ");
+                for (int i=0; i<XMLSettingsReader.Dirs.length;i++)
+                    DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS,this.getClass().getName(), (i+1)+". "+XMLSettingsReader.Dirs[i]);
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }

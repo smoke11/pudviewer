@@ -12,9 +12,31 @@ public class FileOpenPanel extends JPanel
 {
     public File OpenedMapFile;
     public File OpenedXMLFile;
+    private boolean readingMap = false;
+    public String getPathToJar()
+    {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Show path to data files");
+        fileChooser.setAcceptAllFileFilterUsed(false);
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+      // FileFilter filter1 = new ExtensionFileFilter(".jar", new String[] { "jar" });
+       // fileChooser.setFileFilter(filter1);
+        fileChooser.setCurrentDirectory(new File(FileOpenPanel.class.getProtectionDomain().getCodeSource().getLocation().getPath()));
+
+        fileChooser.setAccessory(new LabelAccessory(fileChooser));
+
+        int result = fileChooser.showOpenDialog(this);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            String path = fileChooser.getCurrentDirectory().getPath()+"\\";
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getName(), "Using directory: " + path);
+            return path;
+        }
+        return null;
+    }
     public void openXMLFile(String dir) {
         JFileChooser fileChooser = new JFileChooser();
         FileFilter filter1 = new ExtensionFileFilter(".xml", new String[] { "xml" });
+        fileChooser.setDialogTitle("Open settings.xml");
         fileChooser.setFileFilter(filter1);
 
 
@@ -30,6 +52,7 @@ public class FileOpenPanel extends JPanel
     public void openXMLFile() {
         JFileChooser fileChooser = new JFileChooser();
         FileFilter filter1 = new ExtensionFileFilter(".xml", new String[] { "xml" });
+        fileChooser.setDialogTitle("Open settings.xml");
         fileChooser.setFileFilter(filter1);
         String fulldir = FileOpenPanel.class.getProtectionDomain().getCodeSource().getLocation().getPath();
         String dironly = fulldir.substring(0, fulldir.lastIndexOf("/") + 1);
@@ -51,8 +74,9 @@ public class FileOpenPanel extends JPanel
     public void openMapFile(String dir) {
         JFileChooser fileChooser = new JFileChooser();
         FileFilter filter1 = new ExtensionFileFilter(".pud", new String[] { "pud" });
+        fileChooser.setDialogTitle("Open map file");
         fileChooser.setFileFilter(filter1);
-
+        readingMap=true;
 
         fileChooser.setCurrentDirectory(new File(dir));
         fileChooser.setAccessory(new LabelAccessory(fileChooser));
@@ -62,6 +86,7 @@ public class FileOpenPanel extends JPanel
             OpenedMapFile = fileChooser.getSelectedFile();
             DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getSimpleName(), "Selected file: " + OpenedMapFile.getAbsolutePath());
         }
+        readingMap=false;
     }
 
 }
@@ -123,23 +148,25 @@ class LabelAccessory extends JLabel implements PropertyChangeListener {
 
 
     public void propertyChange(PropertyChangeEvent changeEvent) {
-        String changeName = changeEvent.getPropertyName();
-        String text = "Wrong file.";
-        if (changeName.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
-            File file = (File)changeEvent.getNewValue();
-            if (file != null)
-            {
-                String ext = file.getName().substring(file.getName().lastIndexOf('.'));
-                if(ext.equalsIgnoreCase(".pud"))    //extension==.pud then read data from file
+            String changeName = changeEvent.getPropertyName();
+            String text = "";
+            if (changeName.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
+                File file=null;
+                file = (File)changeEvent.getNewValue();
+                if (file != null&&file.isFile())
                 {
-                    PudParser p = new PudParser();
-                    p.getInfoFromFile(file);
-                    text="Title: "+p.pudTitle +"<br />pudDesc: "+p.pudDesc +"<br />Dimension: "+p.dimX +"x"+p.dimY +"<br />Terrain Type: "+p.terrainType +"<br />Use custom data:<br />Units: "+p.customUnitData +"<br />Upgrades: "+p.customUpgradeData +"<br />Num. of Units on map: "+p.numberofUnitsOnMap;           //hack with html to make new line
+                    String ext = file.getName().substring(file.getName().lastIndexOf('.'));
+                    if(ext.equalsIgnoreCase(".pud"))    //extension==.pud then read data from file
+                    {
+                        PudParser p = new PudParser();
+                        p.getInfoFromFile(file);
+                        text="Title: "+p.pudTitle +"<br />pudDesc: "+p.pudDesc +"<br />Dimension: "+p.dimX +"x"+p.dimY +"<br />Terrain Type: "+p.terrainType +"<br />Use custom data:<br />Units: "+p.customUnitData +"<br />Upgrades: "+p.customUpgradeData +"<br />Num. of Units on map: "+p.numberofUnitsOnMap;           //hack with html to make new line
+                    }
                 }
             }
-        }
                     String labeltext = String.format("<html><div WIDTH=%d>%s</div><html>", PREFERRED_WIDTH, text);      //hack, making text wrap       http://stackoverflow.com/questions/2420742/make-a-jlabel-wrap-its-text-by-setting-a-max-width
                     setText(labeltext);
             }
+
 
     }

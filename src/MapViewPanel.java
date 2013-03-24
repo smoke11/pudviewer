@@ -38,16 +38,21 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             @Override
             public void mouseReleased(MouseEvent e) {
                 //System.out.println(":"+getClass().getName()+"MOUSE_RELEASED_EVENT:");
-                if(!e.isMetaDown())
+                if(e.getButton()== MouseEvent.BUTTON3)
+                {
                     rightMouseClicked =false;
-                else
+                    if(drawUnitInfo)
+                        repaint();
+                }
+                else if (e.getButton()== MouseEvent.BUTTON1)
                     leftMouseClicked=false;
             }
             @Override
             public void mousePressed(MouseEvent e) {
                 //System.out.println(":"+getClass().getName()+"MOUSE_PRESSED_EVENT:");
-                mouseLastX=e.getX();
-                mouseLastY=e.getY();
+                    mouseLastX=e.getX();
+                    mouseLastY=e.getY();
+
 /*
                 if(e.isAltDown())
                     DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltDown");
@@ -61,13 +66,13 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltGraphdown");
 */
 
-                if(e.isMetaDown())
+                if(e.getButton()== MouseEvent.BUTTON3)
                 {
                     rightMouseClicked=true;
                     if(drawUnitInfo)
                         repaint();
                 }
-                else
+                else if(e.getButton()== MouseEvent.BUTTON1)
                     leftMouseClicked =true;
                 if(!drawTileBoxAlways)
                 {
@@ -93,6 +98,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
         super.addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
+                if(!e.isMetaDown()&& !e.isAltDown())
+                {
                     //move camera
                     actualMouseX=e.getX();
                     actualMouseY=e.getY();
@@ -107,6 +114,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     if(!drawTileBoxAlways) //if not drawing TileBox that means we need to specify when repaint, because when drawing TileBox its repaiting all the time
                         drawTileBox=true;
                     repaint();
+                }
             }
 
             @Override
@@ -163,7 +171,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                             g2d.drawString(mapTiles[x][y].PudID, cameraOffsetX + 4 + x * 32, cameraOffsetY + 10 + y * 32);
                         }
                 }
-                for (x=0;x<mapTiles.length;x++)   //make this as list to draw
+                for (x=0;x<mapTiles.length;x++)
                 {
                     for(y=0;y<mapTiles[0].length;y++)
                     {
@@ -233,6 +241,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 Point p = getUnitPosForMousePos(tilex,tiley);
                 if(p!=null)
                 {
+                    g2d.setColor(Color.BLACK);
+                    g2d.fillRect(actualMouseX,actualMouseY,150,65);
                     unitX=p.x;
                     unitY=p.y;
                     f = new Font("serif", Font.PLAIN, 10);
@@ -252,7 +262,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     g2d.drawString("OffsetX: "+unitTiles[unitX][unitY].OffsetX,actualX,actualY);
                     actualY+=10;
                     g2d.drawString("OffsetY: "+unitTiles[unitX][unitY].OffsetY,actualX,actualY);
-                    g2d.drawRect(actualMouseX,actualMouseY,150,actualY-starty+15);
+                    g2d.drawRect(actualMouseX,actualMouseY,150,65);
                 }
             }
 
