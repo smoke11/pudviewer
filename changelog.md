@@ -1,4 +1,6 @@
 Here i will put changelog for sake of keeping info about commits.
+24 march_xx:xx
+fixed naming tiles in xml
 
 24 march_11:34
 fixed problem with unit info text. added background for more readable appear.

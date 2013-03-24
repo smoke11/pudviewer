@@ -237,14 +237,14 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             {
                 int tilex = (actualMouseX-cameraOffsetX)/32;  //TODO: calculate this on begin of method
                 int tiley = (actualMouseY-cameraOffsetY)/32;
-                int unitX, unitY, actualX,actualY;
+                int tileX, tileY, actualX,actualY;
                 Point p = getUnitPosForMousePos(tilex,tiley);
                 if(p!=null)
                 {
                     g2d.setColor(Color.BLACK);
                     g2d.fillRect(actualMouseX,actualMouseY,150,65);
-                    unitX=p.x;
-                    unitY=p.y;
+                    tileX=p.x;
+                    tileY=p.y;
                     f = new Font("serif", Font.PLAIN, 10);
                     g2d.setFont(f);
                     actualX= actualMouseX;
@@ -253,17 +253,20 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     g2d.setColor(Color.GREEN);
                     actualX+=10;
                     actualY+=15;
-                    g2d.drawString("Name: "+unitTiles[unitX][unitY].Name,actualX,actualY);
+                    g2d.drawString("Name: "+unitTiles[tileX][tileY].Name,actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("ID: "+unitTiles[unitX][unitY].ID,actualX,actualY);
+                    g2d.drawString("ID: "+unitTiles[tileX][tileY].ID,actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("PUDID: "+unitTiles[unitX][unitY].PudID,actualX,actualY);
+                    g2d.drawString("PUDID: "+unitTiles[tileX][tileY].PudID,actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("OffsetX: "+unitTiles[unitX][unitY].OffsetX,actualX,actualY);
+                    g2d.drawString("OffsetX: "+unitTiles[tileX][tileY].OffsetX,actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("OffsetY: "+unitTiles[unitX][unitY].OffsetY,actualX,actualY);
+                    g2d.drawString("OffsetY: "+unitTiles[tileX][tileY].OffsetY,actualX,actualY);
                     g2d.drawRect(actualMouseX,actualMouseY,150,65);
                 }
+
+
+
             }
 
         }

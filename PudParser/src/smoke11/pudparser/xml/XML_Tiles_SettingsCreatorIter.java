@@ -116,8 +116,8 @@ public class XML_Tiles_SettingsCreatorIter {
             //<editor-fold desc="Description">
             //32 tiles for boundry, some of tiles have three versions(for example: 0122,0142,0192,01B2), rest has 2 versions
             String[] prefixes = new String[]{"filled", "clear"};
-            //TODO: make accurate names
-            String[] sufixes = new String[]{"upper left","upper right","upper half","lower left","left half","lower right","upper left, lower right"};
+            String[] sufixesFilled = new String[]{"upper left","upper right","upper half","lower left","left half","upper left, lower right","lower right"};
+            String[] sufixesClear = new String[]{"lower right","upper left, lower right","left half","lower left","upper half","upper right","upper left"};
             String[] typesOfTiles = new String[]{"dark water and water","water and coast","dark coast and coast","mount and coast","coast and grass","dark grass and grass","forest and grass","human wall","orc wall"};
             ArrayList<int[]> numberOfVersionsList = new ArrayList<int[]>(); //foreach type of tile, there is other number of version for each prefix*sufix sorted by using order
             numberOfVersionsList.add(new int[]{2,2,3,2,3,2,1,2,2,3,1,3,1,1});  //dark water and water - working
@@ -148,9 +148,9 @@ public class XML_Tiles_SettingsCreatorIter {
                 actualY=startPositionY[n];
                 for (int n2=0;n2<prefixes.length;n2++)  //first for filled then clear prefix
                 {
-                    for (int n3=0;n3<sufixes.length;n3++) //for every angle of tiles sufix
+                    for (int n3=0;n3<sufixesFilled.length;n3++) //for every angle of tiles sufix
                     {
-                        for (int i=0;i<numberOfVersionsList.get(n)[(sufixes.length*n2)+n3];i++) //for each version
+                        for (int i=0;i<numberOfVersionsList.get(n)[(sufixesFilled.length*n2)+n3];i++) //for each version
                         {
                             tile = doc.createElement("Tile");
                             rootElement.appendChild(tile);
@@ -169,7 +169,10 @@ public class XML_Tiles_SettingsCreatorIter {
                             tile.setAttributeNode(attr);
                             //name
                             name = doc.createElement("Name");
-                            name.appendChild(doc.createTextNode(typesOfTiles[n]+" "+prefixes[n2]+" "+sufixes[n3]));
+                            if(n2==0)
+                                name.appendChild(doc.createTextNode(typesOfTiles[n]+" "+prefixes[n2]+" "+sufixesFilled[n3]));
+                            else
+                                name.appendChild(doc.createTextNode(typesOfTiles[n]+" "+prefixes[n2]+" "+sufixesClear[n3]));
                             tile.appendChild(name);
                             //size
                             size = doc.createElement("Size");
@@ -262,13 +265,16 @@ public class XML_Tiles_SettingsCreatorIter {
                         if(n>0)
                             y=5+n+1;
                         if(i<10)
-                            attr.setValue("0"+y+i+v);
+                            attr.setValue("0"+y+i+v);    //TODO: make same looking algorithm for all of xml creations
                         else
                             attr.setValue("0"+y+Character.toString(c)+v);  //chars
                         tile.setAttributeNode(attr);
                         //name
                         name = doc.createElement("Name");
-                        name.appendChild(doc.createTextNode(typesOfTiles[y-1]+" "+prefixes[i/7]+" "+sufixes[i%7]));
+                        if(i>6)
+                            name.appendChild(doc.createTextNode(typesOfTiles[y-1]+" "+prefixes[i/7]+" "+sufixesFilled[i%7]));
+                        else
+                            name.appendChild(doc.createTextNode(typesOfTiles[y-1]+" "+prefixes[i/7]+" "+sufixesClear[i%7]));
                         tile.appendChild(name);
                         //size
                         size = doc.createElement("Size");
