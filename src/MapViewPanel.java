@@ -157,6 +157,8 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             int x, y;
             Font f = new Font("serif", Font.PLAIN, 10);
             g2d.setFont(f);
+            int tilex = (actualMouseX-cameraOffsetX)/32;
+            int tiley = (actualMouseY-cameraOffsetY)/32;
             if(drawTerrain)
             {
                 for (x=0;x<mapTiles.length;x++)
@@ -207,8 +209,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             }
             if(drawTileBox)
             {
-                int tilex = (actualMouseX-cameraOffsetX)/32;  //TODO: calculate this on begin of method
-                int tiley = (actualMouseY-cameraOffsetY)/32;
+
                 int unitX, unitY;
                 Point p = getUnitPosForMousePos(tilex,tiley);
                 if(p!=null&&drawUnits)//check if mouse hovers on some building, if yes, draw tilebox contaning this unit
@@ -235,8 +236,6 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             }
             if(drawUnitInfo&&rightMouseClicked)
             {
-                int tilex = (actualMouseX-cameraOffsetX)/32;  //TODO: calculate this on begin of method
-                int tiley = (actualMouseY-cameraOffsetY)/32;
                 int tileX, tileY, actualX,actualY;
                 Point p = getUnitPosForMousePos(tilex,tiley);
                 if(p!=null)
