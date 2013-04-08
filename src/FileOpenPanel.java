@@ -27,7 +27,7 @@ public class FileOpenPanel extends JPanel
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            String path = fileChooser.getCurrentDirectory().getPath()+"\\";
+            String path = fileChooser.getSelectedFile()+"\\";
             DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, this.getClass().getName(), "Using directory: " + path);
             return path;
         }

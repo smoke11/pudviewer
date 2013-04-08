@@ -1,4 +1,8 @@
 Here i will put changelog for sake of keeping info about commits.
+25 march_16:50
+fixed problem with setting path to data files, and make some small to do
+add critter too
+
 24 march_xx:xx
 fixed naming tiles in xml
 

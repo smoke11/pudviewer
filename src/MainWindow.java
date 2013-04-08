@@ -7,12 +7,12 @@
  */
 
 
+import smoke11.DebugView;
 import smoke11.pudparser.PudParser;
 import smoke11.pudparser.SpritesheetParser;
 import smoke11.pudparser.xml.XMLPudSettingsReader;
 import smoke11.pudparser.xml.XML_Tiles_SettingsCreatorIter;
 import smoke11.pudparser.xml.XML_Units_SettingsCreatorIter;
-import smoke11.DebugView;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -25,7 +25,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-        private String mainDir="C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
+        private String mainDir="";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
         private void createAndShowGUI() {
             if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
@@ -108,7 +108,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
 
 
             try {
-                BufferedImage[] spritesheets = new BufferedImage[]{             //TODO: repair bug with not reading this, when taking path to data files from filechooser
+                BufferedImage[] spritesheets = new BufferedImage[]{
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "human/humanbuildingssummer.png")), //buildings
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/orcbuildingssummer.png")),     //buildings
                         //units
@@ -147,7 +147,8 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "orc/dragon.png")),
                         //misc
                         ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "misc.png")),
-                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "misc.png"))
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "misc.png")),
+                        ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "critters.png"))
 
 
                 };
@@ -190,7 +191,8 @@ public class MainWindow implements IToolboxListenerMainWindow {
                         "Dragon",
                         //misc
                         "Gold Mine",
-                        "Oil Patch"
+                        "Oil Patch",
+                        "Critter"
                 };
                 String[] ignoreIfHave = new String[]{ //sometimes there is a need to ignore some word in name. i.e. there is orc unit - Ogre and there is building Orc Ogre Mound. so there its needed to ignore word Orc for unit because it will choose building or vice versa
                 //if empty, ignore this

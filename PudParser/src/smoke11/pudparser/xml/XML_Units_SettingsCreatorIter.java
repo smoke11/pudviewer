@@ -59,12 +59,12 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             names [1] = new String[]{"Stronghold","Fortress","Great Hall","Pig Farm","Scout Tower","Guard Tower", "Cannon Tower","Blacksmith",
                     "Troll Lumber Mill","Ogre Mound","Altar of Storms","Temple of the Damned", "Shipyard", "Foundry", "Refinery", "Barracks", "Goblin Alchemist","Oil Well","Dragon Roost"
             };
-            names [2] = new String[]{"Gold Mine","Oil Patch"//,"Human Start", "Orc Start"  //TODO: add start points
+            names [2] = new String[]{"Gold Mine","Oil Patch",//"Human Start", "Orc Start"  //TODO: add start points, but there is problem with no sprite for start points
             };
             String[][] ids = new String[4][];
             ids[0]=new String[]{"58","5a","4a","3a","40","60","62","52","4c","42","3e","50","48","4e","54","3c","44","56","46"};
             ids[1]= new String[]{"59","5b","4b","3b","41","61","63","53","4d","43","3f","51","49","4f","55","3d","45","57","47"};
-            ids[2]= new String[]{"5c","5d"//,"5e","5f
+            ids[2]= new String[]{"5c","5d","39"//"5e","5f
              };
             int[][] allOffsetX = new int[4][];
             int[][] allOffsetY = new int[4][];
@@ -75,12 +75,12 @@ public class XML_Units_SettingsCreatorIter {  //'thankfully' each of spritesheet
             allOffsetX[1]=new int[]{135,397,139,337,542,411,477,106,503,307,307,106,108,502,310,107,503,505,307 };
             allOffsetY[1]=new int[]{1,1,538,590,590,590,590,330,231,328,228,129,428,330,429,229,134,429,131};
             //misc
-            allOffsetX[2]=new int[]{13,14,};
-            allOffsetY[2]=new int[]{11, 204,};
+            allOffsetX[2]=new int[]{13,14,12};
+            allOffsetY[2]=new int[]{11, 204,11};
             int[][] sizes = new int[4][];
             sizes[0] = new int[]{128,128,128,64,64,64,64,96,96,96,96,96,96,96,96,96,96,96,96};
             sizes[1] = new int[]{128,128,128,64,64,64,64,96,96,96,96,96,96,96,96,96,96,96,96};
-            sizes[2] = new int[]{96,94};
+            sizes[2] = new int[]{96,94,27};
             for (int i=0;i<sizes[1].length;i++)
             {
                 allOffsetY[1][i]+=13; //because my spritesheet was moved and x,y is broken
