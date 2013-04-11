@@ -50,7 +50,7 @@ public class XMLPudSettingsReader {
 
                 Node nNode = nList.item(temp);
 
-                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Current Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
@@ -103,7 +103,7 @@ public class XMLPudSettingsReader {
             DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(), "----------------------------");
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
-                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLPudSettingsReader.class.getSimpleName(),"Current Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;

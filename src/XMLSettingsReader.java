@@ -23,7 +23,7 @@ public class XMLSettingsReader {
         try {
             File fXmlFile;
             String s =args[0];
-            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLSettingsReader.class.getSimpleName(), "Reading File: "+ s);
+            DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO, XMLSettingsReader.class.getSimpleName(), "Reading File: " + s);
             fXmlFile = new File(s); //settings.xml
 
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -42,15 +42,15 @@ public class XMLSettingsReader {
             for (int temp = 0; temp < nList.getLength(); temp++) {
                 Node nNode = nList.item(temp);
 
-                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "\nCurrent Element: " + nNode.getNodeName());
+                DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Current Element: " + nNode.getNodeName());
 
                 if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                     Element eElement = (Element) nNode;
                     String name = eElement.getAttribute("Name");
-                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(),"Name: "+name);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Name: " + name);
                     Names[temp]=name;
                     String dir = eElement.getAttribute("Dir");
-                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Dir: " +dir);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_MOREINFO, XMLSettingsReader.class.getSimpleName(), "Dir: " + dir);
                     Dirs[temp]=dir;
 
                 }

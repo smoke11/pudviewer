@@ -55,15 +55,15 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
 
 /*
                 if(e.isAltDown())
-                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltDown");
+                    Debug.writeDebug(Debug.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltDown");
                 if(e.isMetaDown())
-                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isMetaDown");
+                    Debug.writeDebug(Debug.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isMetaDown");
                 if(e.isShiftDown())
-                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isShiftDown");
+                    Debug.writeDebug(Debug.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isShiftDown");
                 if(e.isControlDown())
-                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isControlDown");
+                    Debug.writeDebug(Debug.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isControlDown");
                 if(e.isAltGraphDown())
-                    DebugView.writeDebug(DebugView.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltGraphdown");
+                    Debug.writeDebug(Debug.DEBUGLVL_LESSINFO,this.getClass().getSimpleName(),"isAltGraphdown");
 */
 
                 if(e.getButton()== MouseEvent.BUTTON3)
@@ -240,8 +240,9 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 Point p = getUnitPosForMousePos(tilex,tiley);
                 if(p!=null)
                 {
+                    int rectX=150,rectY=150;
                     g2d.setColor(Color.BLACK);
-                    g2d.fillRect(actualMouseX,actualMouseY,150,65);
+                    g2d.fillRect(actualMouseX,actualMouseY,rectX,rectY);
                     tileX=p.x;
                     tileY=p.y;
                     f = new Font("serif", Font.PLAIN, 10);
@@ -258,10 +259,25 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                     actualY+=10;
                     g2d.drawString("PUDID: "+unitTiles[tileX][tileY].PudID,actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("OffsetX: "+unitTiles[tileX][tileY].OffsetX,actualX,actualY);
+                    g2d.drawString("Position: ",actualX,actualY);
                     actualY+=10;
-                    g2d.drawString("OffsetY: "+unitTiles[tileX][tileY].OffsetY,actualX,actualY);
-                    g2d.drawRect(actualMouseX,actualMouseY,150,65);
+                    g2d.drawString("  X: "+tileX*32,actualX,actualY);
+                    actualY+=8;
+                    g2d.drawString("  Y: "+tileY*32,actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("Sprite: ",actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("  OffsetX: "+unitTiles[tileX][tileY].OffsetX,actualX,actualY);
+                    actualY+=8;
+                    g2d.drawString("  OffsetY: "+unitTiles[tileX][tileY].OffsetY,actualX,actualY);
+                    g2d.drawRect(actualMouseX,actualMouseY,rectX,rectY);
+                    actualY+=10;
+                    g2d.drawString("  Size: ",actualX,actualY);
+                    actualY+=10;
+                    g2d.drawString("    X: "+unitTiles[tileX][tileY].SizeX,actualX,actualY);
+                    actualY+=8;
+                    g2d.drawString("    Y: "+unitTiles[tileX][tileY].SizeY,actualX,actualY);
+                    actualY+=10;
                 }
 
 

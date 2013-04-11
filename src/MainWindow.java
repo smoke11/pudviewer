@@ -7,7 +7,6 @@
  */
 
 
-import smoke11.DebugView;
 import smoke11.pudparser.PudParser;
 import smoke11.pudparser.SpritesheetParser;
 import smoke11.pudparser.xml.XMLPudSettingsReader;
@@ -20,17 +19,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
+import smoke11.DebugView;
 public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-        private String mainDir="";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
+        private String mainDir="D:\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
         private void createAndShowGUI() {
-            if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
+            DebugView.setDebugLevel(DebugView.DEBUGLVL_MOREINFO);
+            if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
-                //Create and set up the debug window.
-                DebugView.createWindow(830, 0, 200, 400,DebugView.DEBUGLVL_LESSINFO);
+                DebugView.createWindow(830, 0, 200, 400, DebugView.DEBUGLVL_LESSINFO);
             }
 
             //Create and set up the main window.
@@ -235,9 +234,9 @@ public class MainWindow implements IToolboxListenerMainWindow {
                 mapViewPanel.setImages(unitTiles,SpritesheetParser.cutSpriteSheet(ImageIO.read(new File(XMLSettingsReader.Dirs[3] + "summertiles.png")), XMLPudSettingsReader.SortedTerrainTiles));
             }
             catch (IOException e) {
-                DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS,this.getClass().getName(), "Dirs: ");
+                DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS, this.getClass().getName(), "Dirs: ");
                 for (int i=0; i<XMLSettingsReader.Dirs.length;i++)
-                    DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS,this.getClass().getName(), (i+1)+". "+XMLSettingsReader.Dirs[i]);
+                    DebugView.writeDebug(DebugView.DEBUGLVL_ERRORS, this.getClass().getName(), (i + 1) + ". " + XMLSettingsReader.Dirs[i]);
                 e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
             }
         }

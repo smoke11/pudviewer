@@ -1,4 +1,7 @@
 Here i will put changelog for sake of keeping info about commits.
+11 april_16:30
+added more info to unit info showed when right click on unit.
+also some little fixes
 25 march_16:50
 fixed problem with setting path to data files, and make some small to do
 add critter too
