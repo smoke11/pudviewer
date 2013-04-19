@@ -7,12 +7,6 @@
  */
 
 
-import smoke11.pudparser.PudParser;
-import smoke11.pudparser.SpritesheetParser;
-import smoke11.pudparser.xml.XMLPudSettingsReader;
-import smoke11.pudparser.xml.XML_Tiles_SettingsCreatorIter;
-import smoke11.pudparser.xml.XML_Units_SettingsCreatorIter;
-
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -20,16 +14,21 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import smoke11.DebugView;
+import smoke11.wc2utils.PudParser;
+import smoke11.wc2utils.xml.XMLPudSettingsReader;
+import smoke11.wc2utils.xml.XML_Tiles_SettingsCreatorIter;
+import smoke11.wc2utils.xml.XML_Units_SettingsCreatorIter;
+
 public class MainWindow implements IToolboxListenerMainWindow {
 
         private MapViewPanel mapViewPanel;
         private boolean firstTimeOpen = true;
-        private String mainDir="D:\\datafiles\\";//"C:\\Users\\nao\\Documents\\JavaProjects\\pudviewer\\datafiles\\";//"";//"C:\\Documents and Settings\\nobody_traveler\\My Documents\\datafiles\\";//; //use this to change path to files of this program
+        private String mainDir="D:\\datafiles\\"; //use this to change path to files of this program
         private void createAndShowGUI() {
             DebugView.setDebugLevel(DebugView.DEBUGLVL_MOREINFO);
-            if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
+            if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
-                DebugView.createWindow(830, 0, 200, 400, DebugView.DEBUGLVL_LESSINFO);
+                DebugView.createWindow(830, 0, 200, 400, DebugView.DEBUGLVL_MOREINFO);
             }
 
             //Create and set up the main window.

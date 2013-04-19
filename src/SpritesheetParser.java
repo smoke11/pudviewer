@@ -1,4 +1,5 @@
-package smoke11.pudparser;
+
+import smoke11.wc2utils.Tile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

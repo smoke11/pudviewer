@@ -1,5 +1,7 @@
-import smoke11.pudparser.PudParser;
+
 import smoke11.DebugView;
+import smoke11.wc2utils.PudParser;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;

@@ -1,5 +1,5 @@
 import smoke11.DebugView;
-import smoke11.pudparser.Tile;
+import smoke11.wc2utils.Tile;
 
 import javax.swing.*;
 import java.awt.*;

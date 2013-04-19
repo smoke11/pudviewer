@@ -33,7 +33,8 @@ public class XMLSettingsCreator {
             Element rootElement = doc.createElement("MainSettings");
             doc.appendChild(rootElement);
             String[] names = new String[]{"data_files","unit_tiles","terrain_tiles","sprites","maps"};
-            String[] dirs = new String[]{argv[0],argv[0]+"unit_tiles.xml",
+            String[] dirs = new String[]{argv[0],
+                    argv[0]+"unit_tiles.xml",
                     argv[0]+"terrain_tiles.xml",
                     argv[0]+"sprites\\",
                     argv[0]+"test maps\\"
