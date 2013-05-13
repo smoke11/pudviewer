@@ -7,6 +7,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 /**
  * Created with IntelliJ IDEA.
@@ -140,11 +141,20 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
         terrainSprites =tileSprites;
         unitSprites=unitsSprites;
     }
-    public void prepareTiles(Tile[][] MapTiles, Tile[][] UnitTiles)
+    public void prepareTiles(Tile[][] MapTiles, ArrayList<Tile>[][] UnitTiles)
     {
 
         mapTiles = MapTiles;
-        unitTiles = UnitTiles;
+        //because i`m not gonna make use of arraylist[][], because i`m lazy ass. i`m assuming there is no spot with 2 units in same tile
+        Tile[][] untTiles = new Tile[UnitTiles.length][UnitTiles[0].length];
+
+        for (int x =0; x<UnitTiles.length;x++)
+            for (int y=0; y<UnitTiles[0].length;y++)
+                if(UnitTiles[x][y]!=null&&UnitTiles[x][y].size()>0)
+                    untTiles[x][y]=UnitTiles[x][y].get(0);
+
+
+        unitTiles = untTiles;
 
     }
     @Override public void paintComponent(Graphics g) {

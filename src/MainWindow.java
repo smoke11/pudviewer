@@ -14,10 +14,12 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import smoke11.DebugView;
+import smoke11.wc2utils.FileOpenPanel;
 import smoke11.wc2utils.PudParser;
 import smoke11.wc2utils.xml.XMLPudSettingsReader;
+import smoke11.wc2utils.xml.XML_StaticUnits_SettingsCreatorIter;
 import smoke11.wc2utils.xml.XML_Tiles_SettingsCreatorIter;
-import smoke11.wc2utils.xml.XML_Units_SettingsCreatorIter;
+
 
 public class MainWindow implements IToolboxListenerMainWindow {
 
@@ -26,7 +28,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
         private String mainDir="D:\\datafiles\\"; //use this to change path to files of this program
         private void createAndShowGUI() {
             DebugView.setDebugLevel(DebugView.DEBUGLVL_MOREINFO);
-            if(true)//XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
+            if(XMLPudSettingsReader.class.getProtectionDomain().getCodeSource().getLocation().getPath().contains(".jar"))//if it is stand alone, make console window
             {
                 DebugView.createWindow(830, 0, 200, 400, DebugView.DEBUGLVL_MOREINFO);
             }
@@ -96,7 +98,7 @@ public class MainWindow implements IToolboxListenerMainWindow {
             terraintiles = new File(XMLSettingsReader.Dirs[2]);
             if(true)//!unittiles.exists())  TODO: For now making with each run new xml, for test. after this, removeit
             {
-                int result = XML_Units_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[1]});
+                int result = XML_StaticUnits_SettingsCreatorIter.main(new String[]{XMLSettingsReader.Dirs[1]});
             }
             if(true)//!terraintiles.exists()) TODO: For now making with each run new xml, for test. after this, removeit
             {
