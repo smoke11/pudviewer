@@ -25,11 +25,13 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     private int mouseLastX=0,mouseLastY=0; //used for cameraoffset
     private int actualMouseX=0, actualMouseY=0;
     private boolean drawText = false;
-    private boolean drawTileBoxAlways =false;//used for drawing tile size boxed which follows mouse cursor
+    private boolean drawTileBoxAlways =true;//used for drawing tile size boxed which follows mouse cursor
     private boolean drawTileBox = false;  //used for drawing only tilebox and clean tile with last tilebox position
+    private boolean drawGrid = false;
     private boolean drawTerrain = true;
     private boolean drawUnits = true;
     private boolean drawUnitInfo = true;
+    private boolean biggerFont = false;
     private boolean leftMouseClicked =false ,rightMouseClicked=false;
     public MapViewPanel(Dimension d)
     {
@@ -165,7 +167,11 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
             Graphics2D g2d = (Graphics2D) g;
 
             int x, y;
-            Font f = new Font("serif", Font.PLAIN, 10);
+            Font f;
+            if(biggerFont)
+                f = new Font("serif", Font.PLAIN, 15);
+            else
+                f = new Font("serif", Font.PLAIN, 10);
             g2d.setFont(f);
             int tilex = (actualMouseX-cameraOffsetX)/32;
             int tiley = (actualMouseY-cameraOffsetY)/32;
@@ -206,16 +212,28 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                         if(drawText)
                         {
                             g2d.setColor(Color.CYAN);
-                            g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+10+y*32);
+                            g2d.drawString(mapTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+13+y*32);
                             if(unitTiles[x][y]!=null)
                             {
                                 g2d.setColor(Color.RED);
-                                g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+5+x*32,cameraOffsetY+20+y*32);
+                                g2d.drawString(unitTiles[x][y].PudID,cameraOffsetX+4+x*32,cameraOffsetY+23+y*32);
                             }
                         }
 
                     }
                 }
+            }
+            if(drawGrid)
+            {
+                for (x=0;x<mapTiles.length;x++)
+                {
+                    for(y=0;y<mapTiles[0].length;y++)
+                    {
+                        g2d.setColor(Color.WHITE);
+                        g2d.drawRect(cameraOffsetX+x*32,cameraOffsetY+y*32,32,32);
+                    }
+                }
+
             }
             if(drawTileBox)
             {
@@ -226,7 +244,7 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 {
                     unitX=p.x;
                     unitY=p.y;
-                    g2d.setColor(Color.WHITE);
+                    g2d.setColor(Color.GREEN);
                     if(checkIfBuilding(unitX,unitY))
                         g2d.drawRect(cameraOffsetX+unitX*32,cameraOffsetY+unitY*32,unitTiles[unitX][unitY].SizeX,unitTiles[unitX][unitY].SizeY);
                     else //if not building calculate real drawing x,y for unit and draw
@@ -239,11 +257,12 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
                 }
                 else //draw regular tilebox
                 {
-                    g2d.setColor(Color.WHITE);
+                    g2d.setColor(Color.GREEN);
                     g2d.drawRect(cameraOffsetX+tilex*32,cameraOffsetY+tiley*32,32,32);
                 }
                 drawTileBox=false;
             }
+
             if(drawUnitInfo&&rightMouseClicked)
             {
                 int tileX, tileY, actualX,actualY;
@@ -351,8 +370,13 @@ public class MapViewPanel extends JPanel implements IToolboxListenerMapPanel {  
     }
 
     @Override
-    public void drawTilebox(ToolboxEvents e) {
-       drawTileBoxAlways=!drawTileBoxAlways;
+    public void drawGrid(ToolboxEvents e) {
+       drawGrid=!drawGrid;
+    }
+
+    @Override
+    public void biggerFont(ToolboxEvents e) {
+        biggerFont=!biggerFont;
     }
 
     @Override

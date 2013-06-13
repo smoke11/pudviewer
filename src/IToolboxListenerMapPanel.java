@@ -7,7 +7,8 @@
  */
 public interface IToolboxListenerMapPanel {
     public void showID(ToolboxEvents e);
-    public void drawTilebox(ToolboxEvents e);
+    public void drawGrid(ToolboxEvents e);
+    public void biggerFont(ToolboxEvents e);
     public void drawUnits(ToolboxEvents e);
 }
 

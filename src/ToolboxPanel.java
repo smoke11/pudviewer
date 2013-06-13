@@ -32,17 +32,22 @@ public class ToolboxPanel extends JPanel implements ActionListener, IMapPanelLis
         loadMap.addActionListener(this);
 
         JButton drawTileBox = new JButton();
-        drawTileBox.setText("Tilebox drawing");
+        drawTileBox.setText("Draw grid");
         drawTileBox.addActionListener(this);
 
         JButton drawUnitsBox = new JButton();
         drawUnitsBox.setText("Draw Units");
         drawUnitsBox.addActionListener(this);
 
+        JButton biggerFont = new JButton();
+        biggerFont.setText("Bigger font");
+        biggerFont.addActionListener(this);
+
         super.add(showID);
         super.add(loadMap);
         super.add(drawTileBox);
         super.add(drawUnitsBox);
+        super.add(biggerFont);
 
     }
     public synchronized void addEventListener(IToolboxListenerMapPanel listener)  {
@@ -74,13 +79,17 @@ public class ToolboxPanel extends JPanel implements ActionListener, IMapPanelLis
                     while(i1.hasNext())	{
                         ((IToolboxListenerMapPanel) i1.next()).showID(e);
                     }
-                else if(whatToFire.equalsIgnoreCase("Tilebox drawing"))
+                else if(whatToFire.equalsIgnoreCase("Draw grid"))
                     while(i1.hasNext())	{
-                        ((IToolboxListenerMapPanel) i1.next()).drawTilebox(e);
+                        ((IToolboxListenerMapPanel) i1.next()).drawGrid(e);
                     }
                 else if(whatToFire.equalsIgnoreCase("Draw Units"))
                     while(i1.hasNext())	{
                         ((IToolboxListenerMapPanel) i1.next()).drawUnits(e);
+                    }
+                else if(whatToFire.equalsIgnoreCase("Bigger font"))
+                    while(i1.hasNext())	{
+                        ((IToolboxListenerMapPanel) i1.next()).biggerFont(e);
                     }
             }
 
